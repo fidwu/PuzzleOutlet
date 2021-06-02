@@ -1,0 +1,36 @@
+.active {
+    font-weight: bold;
+}
+.navbar-nav a {
+    padding: 0 2vw;
+    color: white;
+    text-decoration: none;
+}
+.card {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    min-width: 20vw;
+}
+
+.star-rating {
+    margin-top: -8px;
+    margin-bottom: -4px;
+    display: flex;
+    align-items: center;
+}
+
+.productDetails {
+    display: flex;
+    flex-wrap: wrap;
+
+    img {
+        width: 35%;
+        margin-right: 10px;
+    }
+
+    .productInfo {
+        width: 40%;
+    }
+}
