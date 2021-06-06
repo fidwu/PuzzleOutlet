@@ -10,7 +10,7 @@ const ProductCard = (props) => {
 
   return (
       <Card onClick={() => handleCardClick(props.id)} style={{ cursor: "pointer" }}>
-        <Card.Img variant="top" />
+        <Card.Img variant="top" src={props.image} />
         <Card.Body>
           <Card.Title className="mb-0">{props.item}</Card.Title>
           <div className="star-rating">

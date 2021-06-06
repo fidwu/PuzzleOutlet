@@ -1,6 +1,9 @@
 .active {
     font-weight: bold;
 }
+.navbar {
+    margin-bottom: 1em;
+}
 .navbar-nav a {
     padding: 0 2vw;
     color: white;
@@ -21,16 +24,130 @@
     align-items: center;
 }
 
-.productDetails {
+.productDescription {
+    margin-top: 1em;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.productDetails {
+    margin-bottom: 1em;
+    width: 100%;
 
     img {
         width: 35%;
-        margin-right: 10px;
+        margin-right: 40px;
+        float: left;
     }
 
     .productInfo {
-        width: 40%;
+        display: flex;
+        margin-bottom: 10px;
     }
+
+    .product {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .buyProduct {
+        border-radius: 33px/11px;
+        border: 2px solid lightgray;
+        font-size: 18px;
+        padding: 1em 0.5em;
+        // display: flex;
+        // justify-content: center;
+        margin-right: 3em;
+        width: 45%;
+
+        .form-control {
+            min-width: 6vw;
+        }
+    }
+}
+
+.card-header {
+    border-bottom: none;
+}
+
+.container-fluid {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.shoppingCart, .pastOrders {
+    .card {
+        display: flex;
+        flex-direction: row;
+    }
+    .card-body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .itemDetails {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .totalPrice {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .card-subtitle {
+            font-size: 20px;
+        }
+    }
+    img {
+        width: 15vw;
+        height: auto;
+        margin: 20px;
+        margin-right: 0px;
+    }
+}
+
+.shoppingCart {
+    display: flex;
+    justify-content: space-between;
+    .cartItems {
+        flex: 4;
+        margin-right: 15px;
+    }
+    .placeOrder {
+        display: flex;
+        flex-direction: column;
+        flex: 1.5;
+        border: 1px solid lightgray;
+        padding: 20px;
+        justify-content: center;
+        height: fit-content;
+    }
+}
+
+.pastOrdersContainer {
+    width: auto;
+    .pastOrders {
+        display: flex;
+        justify-content: space-between;
+    }
+    .orderTotalPrice {
+        font-weight: normal;
+    }
+    .card {
+        border: none;
+        margin-bottom: 0;
+    }
+    img {
+        margin: 0;
+    }
+}
+
+.flex-row {
+    display: flex;
+}
+
+.align-right {
+    margin-left: auto;
 }

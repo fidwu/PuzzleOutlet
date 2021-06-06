@@ -1,5 +1,5 @@
 import ProductCard from '../components/ProductCard';
-import inventory from '../data/inventory';
+import { Inventory } from '../data/Inventory';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,10 +11,10 @@ function Home() {
         <Container fluid>
         <h2 className="mb-3">Shop Products</h2>
           <Row>
-            {inventory.map((item) => (
-              <Col md={3} sm={6} key={item.id}>
+            {Inventory.map((item, id) => (
+              <Col md={3} sm={6} key={id}>
                 <ProductCard
-                  id={item.id}
+                  id={id}
                   image={item.image}
                   price={item.price}
                   item={item.product}

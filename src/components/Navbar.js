@@ -34,6 +34,9 @@ const Header = () => {
           <NavLink exact to="/cart">
             Cart
           </NavLink>
+          <NavLink exact to="/pastorders">
+            Past Orders
+          </NavLink>
         </Nav>
       </Navbar>
     </>

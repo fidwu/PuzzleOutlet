@@ -8,6 +8,7 @@ import {
 import Home from './pages/Home';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
+import PastOrders from './pages/PastOrders';
 import Header from './components/Navbar';
 
 function App() {
@@ -20,6 +21,11 @@ function App() {
             exact
             path="/"
             component={Home}
+          />
+          <Route
+            exact
+            path="/pastorders"
+            component={PastOrders}
           />
           <Route
             exact 
