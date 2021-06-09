@@ -11,30 +11,31 @@ const PastOrders = () => {
     (user) => user.username === 'username' && user.password === 'password'
   )[0];
 
-  // get id's of items in the user's cart
-  const itemsInCart = user.boughtItems;
-  const getCartItemsId = itemsInCart.map((item) => item.itemId);
+  // get id's of items user bought
+  const itemsUserBought = user.boughtItems;
+  const getBoughtItemsId = itemsUserBought.map((item) => item.itemId);
   //console.log(getCartItemsId);
 
   // use item id's and match to inventory id to get product details
-  const cartItems = Inventory.filter((inventory) =>
-    getCartItemsId.includes(inventory.itemId)
+  const boughtItems = Inventory.filter((inventory) =>
+    getBoughtItemsId.includes(inventory.itemId)
   );
-  //console.log(cartItems);
+  console.log(boughtItems);
 
-  // combine item and quantity in cart information into one array
-  const cartItemDetails = itemsInCart.map((val, id) => ({
+  // combine item info with date and quantity bought info into one array
+  const boughtItemDetails = itemsUserBought.map((val, id) => ({
     ...val,
-    ...cartItems[id],
+    ...boughtItems[id],
   }));
-  console.log("item details combined: ", cartItemDetails);
+  console.log("item details combined: ", boughtItemDetails);
 
-  const sortByDate = cartItemDetails
+  const sortByDate = boughtItemDetails
     .slice()
     .sort((a, b) => new Date(b.dateBought) - new Date(a.dateBought));
   console.log(sortByDate);
 
-  // this gives an object with dates as keys
+  // group items by date - type object
+  // key: date bought, values: items
   const groupByDate = sortByDate.reduce((total, current) => {
     const date = new Date(current.dateBought);
     if (!total[date]) {
@@ -46,6 +47,7 @@ const PastOrders = () => {
 
   //console.log(groupByDate);
 
+  // past orders array sorted and grouped by date with total price and orders info
   const pastOrders = Object.keys(groupByDate).map((date) => {
     const totalPrice = groupByDate[date].reduce((total, current) => {
       return total + current.price.substring(1) * current.quantityBought;
@@ -75,9 +77,9 @@ const PastOrders = () => {
           {pastOrders.map((orders, id) => {
             return (
               <div key={id} className="mb-3">
-                <Card.Header as="h5" className="flex-row">
+                <Card.Header as="h5" className="d-flex">
                   <div>Placed {formatDate(orders.date)}</div>
-                  <div className="align-right orderTotalPrice">${orders.total}</div>
+                  <div className="ml-auto orderTotalPrice">${orders.total}</div>
                 </Card.Header>
                 <ListGroup>
                 {orders.orders.map((item, id) => {

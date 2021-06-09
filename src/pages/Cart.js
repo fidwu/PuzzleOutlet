@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import CartProduct from'../components/CartProduct';
 import { User } from '../data/User';
 import { Inventory } from '../data/Inventory';
+import { Link } from 'react-router-dom';
 
 const Cart = () => {
 
@@ -43,7 +44,9 @@ const Cart = () => {
         </div>
         <div className="placeOrder">
           <h3 className="mb-4">Subtotal ({cartItemDetails.length} {cartItemDetails.length === 1 ? 'item' : 'items'}): ${totalPrice}</h3>
-          <Button>Place Order</Button>
+          <Link to='/order'>
+            <Button>Place Order</Button>
+          </Link>
         </div>
       </div>
     </Container>

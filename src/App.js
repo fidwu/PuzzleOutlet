@@ -10,6 +10,7 @@ import Product from './pages/Product';
 import Cart from './pages/Cart';
 import PastOrders from './pages/PastOrders';
 import Header from './components/Navbar';
+import PlaceOrder from './pages/PlaceOrder';
 
 function App() {
   return (
@@ -31,6 +32,11 @@ function App() {
             exact 
             path="/cart"
             component={Cart}
+          />
+          <Route
+            exact 
+            path="/order"
+            component={PlaceOrder}
           />
           <Route
             path="/:id"
