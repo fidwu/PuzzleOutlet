@@ -14,7 +14,7 @@ const CartProduct = (props) => {
       <Card.Body className="itemDetails">
         <Card.Title>{props.item}</Card.Title>
         <Card.Text>{props.price}</Card.Text>
-        {location.pathname === "/order" ?
+        {location.pathname === "/order" || location.pathname === "/pastorders" ?
           <Card.Text>Quantity: {props.quantity}</Card.Text>
           : 
         <Form inline>

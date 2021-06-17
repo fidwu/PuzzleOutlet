@@ -8,7 +8,7 @@ import Shipping from "../components/Shipping";
 import Confirm from "../components/Confirm";
 import OrderSummary from "../components/OrderSummary";
 
-const PlaceOrder = () => {
+const PlaceOrder = (props) => {
   const [activeTab, setActiveTab] = useState(0);
   const shippingFormValues = {
     fname: "",
@@ -184,7 +184,10 @@ const PlaceOrder = () => {
         </div>
       </div>
       <div className="order-summary">
-        <OrderSummary />
+        <OrderSummary 
+          items={props.cartItems} 
+          totalPrice={props.totalPrice}
+        />
       </div>
     </Container>
   );

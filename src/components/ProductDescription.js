@@ -5,6 +5,7 @@ import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
 
 const ProductDescription = (props) => {
+
   return (
     <div className="productDescription">
       <div className="productDetails">
@@ -29,15 +30,15 @@ const ProductDescription = (props) => {
           <div className="buyProduct">
             <Form inline className="mb-2">
               <Form.Label>Quantity: &nbsp;</Form.Label>
-              <Form.Control as="select" className="mr-3">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+              <Form.Control as="select" className="mr-3" value={props.quantity || props.quantityVal} onChange={props.setQuantityVal}>
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+                <option value={4}>4</option>
+                <option value={5}>5</option>
               </Form.Control>
             </Form>
-            <Button>Add to Cart</Button>
+            <Button onClick={props.addToCart}>{props.inCart() ? 'Item added' : 'Add to Cart'}</Button>
           </div>
         </div>
 

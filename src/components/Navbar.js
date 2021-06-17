@@ -7,7 +7,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { matchPath } from "react-router";
 import { User } from "../data/User";
 
-const Header = () => {
+const Header = (props) => {
   const pathname = useLocation().pathname;
 
   const checkPathId = () => {
@@ -16,16 +16,6 @@ const Header = () => {
       exact: true,
     });
     return match;
-  };
-
-  const numCartItems = () => {
-    const user = User.filter(
-      (user) => user.username === "username" && user.password === "password"
-    )[0];
-
-    // get id's of items in the user's cart
-    const itemsInCart = user.cartItemsId.length;
-    return itemsInCart;
   };
 
   return (
@@ -49,7 +39,7 @@ const Header = () => {
           <NavLink exact to="/cart">
             Cart{" "}
             <Badge pill variant="info">
-              {numCartItems()}
+              {props.numCartItems}
             </Badge>
           </NavLink>
           <NavLink exact to="/pastorders">

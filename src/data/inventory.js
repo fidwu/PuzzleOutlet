@@ -1,4 +1,4 @@
-export const Inventory = [
+export const InventoryData = [
     {
         itemId: 0,
         product: 'Phone case 1',
