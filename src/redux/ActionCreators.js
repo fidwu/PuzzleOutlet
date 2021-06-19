@@ -15,3 +15,10 @@ export const updateItem = (itemId, quantity) => ({
         quantity
     }
 })
+
+export const deleteItem = (itemId) => ({
+    type: ActionTypes.DELETE_ITEM,
+    payload: {
+        itemId
+    }
+})

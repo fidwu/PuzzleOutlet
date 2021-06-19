@@ -5,7 +5,6 @@ import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
 import { NavLink, useLocation } from "react-router-dom";
 import { matchPath } from "react-router";
-import { User } from "../data/User";
 
 const Header = (props) => {
   const pathname = useLocation().pathname;

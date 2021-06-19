@@ -7,7 +7,7 @@ import Cart from "./pages/Cart";
 import PastOrders from "./pages/PastOrders";
 import Header from "./components/Navbar";
 import PlaceOrder from "./pages/PlaceOrder";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function App() {
 
@@ -44,7 +44,7 @@ function App() {
   });
 
   // console.log(updatedItemAmtInventory);
-  // console.log(cart);
+  console.log(cart);
   // console.log(bought);
 
   const CartComponent = () => {

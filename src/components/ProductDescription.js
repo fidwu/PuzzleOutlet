@@ -1,11 +1,14 @@
 import Button from "react-bootstrap/Button";
+import InputGroup from "react-bootstrap/InputGroup";
 import ReactStars from "react-rating-stars-component";
 import { withRouter } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
+import { MdAdd } from "react-icons/md";
+import { MdRemove } from "react-icons/md";
 
 const ProductDescription = (props) => {
-
+  console.log(props.quantity);
   return (
     <div className="productDescription">
       <div className="productDetails">
@@ -28,17 +31,41 @@ const ProductDescription = (props) => {
           </div>
 
           <div className="buyProduct">
-            <Form inline className="mb-2">
-              <Form.Label>Quantity: &nbsp;</Form.Label>
-              <Form.Control as="select" className="mr-3" value={props.quantity || props.quantityVal} onChange={props.setQuantityVal}>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-                <option value={4}>4</option>
-                <option value={5}>5</option>
-              </Form.Control>
-            </Form>
-            <Button onClick={props.addToCart}>{props.inCart() ? 'Item added' : 'Add to Cart'}</Button>
+            <div className="actionsDisplay">
+            {props.inCart() || props.quantity > 0 ? (
+              <Form inline className="mb-2">
+                <Form.Label>Quantity: &nbsp;</Form.Label>
+                <InputGroup className="form-inline" size="sm">
+                  <InputGroup.Prepend>
+                    <Button
+                      variant="outline-secondary"
+                      value={"-"}
+                      onClick={(e) => props.handleQuantUpdate(e, "-")}
+                    >
+                      <MdRemove />
+                    </Button>
+                  </InputGroup.Prepend>
+                  {/* <Form.Control size="sm" name="foo" value={props.quantity || props.quantityVal} onChange={e => props.handleQuantUpdate(e)} /> */}
+                  <InputGroup.Text>
+                    {props.quantity || 1}
+                  </InputGroup.Text>
+                  <InputGroup.Append>
+                    <Button
+                      variant="outline-secondary"
+                      value={"+"}
+                      onClick={(e) => props.handleQuantUpdate(e, "+")}
+                    >
+                      <MdAdd />
+                    </Button>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Form>
+            ) : (
+              <Button onClick={props.addToCart}>
+                Add to Cart
+              </Button>
+            )}
+            </div>
           </div>
         </div>
 

@@ -3,16 +3,16 @@ import * as ActionTypes from "./ActionTypes";
 
 export const Cart = (state = CartData, action) => {
   switch (action.type) {
+
     case ActionTypes.ADD_ITEM:
-      console.log(action);
       const item = action.payload;
-      console.log(state.concat(item));
       return state.concat(item);
+    
     case ActionTypes.UPDATE_ITEM:
-      const updatedState = state.map((item) => {
+      let updatedState = state.map((item) => {
+        console.log(action.payload);
         // if not same item id, keep original
         if (item.itemId !== action.payload.itemId) {
-          // This isn't the item we care about - keep it as-is
           return item;
         }
         // otherwise, update to new
@@ -21,8 +21,16 @@ export const Cart = (state = CartData, action) => {
           ...action.payload,
         };
       });
+      updatedState = updatedState.filter((item) => item.quantity !== 0);
       console.log(updatedState);
       return updatedState;
+
+    case ActionTypes.DELETE_ITEM:
+      const filteredArray = state.filter((val) => { 
+        return val.itemId !== action.payload.itemId
+      });
+      return filteredArray;
+
     default:
       return state;
   }

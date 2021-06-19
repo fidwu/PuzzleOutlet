@@ -57,8 +57,8 @@ hr {
     padding: 1em 0.5em;
     margin-right: 3em;
     width: 45%;
-    .form-control {
-      min-width: 6vw;
+    .input-group > * {
+      height: 40px;
     }
   }
 }
@@ -118,6 +118,10 @@ hr {
     padding: 20px;
     justify-content: center;
     height: fit-content;
+  }
+  .card-link:hover {
+    cursor: pointer;
+    color: blue;
   }
 }
 

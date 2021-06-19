@@ -1,10 +1,8 @@
+import React from "react";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import CartProduct from "../components/CartProduct";
-// import { User } from "../data/User";
-// import { Inventory } from "../data/Inventory";
 import { Link } from "react-router-dom";
-// import { useEffect } from "react";
 
 const Cart = (props) => {
   console.log(props.cartItems);
@@ -20,12 +18,19 @@ const Cart = (props) => {
           {props.cartItems.map((cartItems, id) => 
             <CartProduct
               key={id}
+              itemId={cartItems.itemId}
               item={cartItems.product}
               price={cartItems.price + ' ea.'}
               image={cartItems.image}
               quantity={cartItems.quantity}
             />
           )}
+          {props.cartItems.length === 0 &&
+            <div className="text-center">
+              <h3>Your cart is empty.</h3>
+              <p>Add an item or sign in to check your cart!</p>
+            </div>
+          }
         </div>
         <div className="placeOrder">
           <h3 className="mb-4">
@@ -33,7 +38,7 @@ const Cart = (props) => {
             {props.cartItems.length === 1 ? "item" : "items"}): ${props.totalPrice}
           </h3>
           <Link to="/order">
-            <Button>Place Order</Button>
+            <Button disabled={props.cartItems.length === 0}>Place Order</Button>
           </Link>
         </div>
       </div>
