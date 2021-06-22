@@ -16,13 +16,14 @@ function App() {
 
   // cart - info on products being added to cart
   const cart = useSelector((state) => {
-    return state.cart.map((val, id) => (
-      {
+    return state.cart.map((val, id) => {
+      console.log(val);
+      return {
       ...val,
       ...inventory.find((item) => {
         return (item.itemId === val.itemId)
       })
-    }));
+    }});
   });
 
   // bought - info on products bought

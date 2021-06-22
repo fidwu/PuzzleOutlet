@@ -1,39 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { deleteItem, updateItem } from '../redux/ActionCreators';
-import InputGroup from "react-bootstrap/InputGroup";
-import { MdAdd } from "react-icons/md";
-import { MdRemove } from "react-icons/md";
+import { deleteItem } from '../redux/ActionCreators';
+import Quantity from './Quantity';
 
 const CartProduct = (props) => {
   let location = useLocation();
 
-  // const [quantityVal, setQuantityVal] = useState(1);
   const dispatch = useDispatch();
 
   const deleteFromCart = (e) => {
     e.preventDefault();
     console.log(props);
     dispatch(deleteItem(props.itemId));
-  }
-
-  const [quantity, setQuantity] = useState(props.quantity || 1);
-
-  const quantityChanged = (e, type) => {
-    e.preventDefault();
-    let updatedQuantity = quantity;
-    if (type === "+") {
-      updatedQuantity = quantity + 1;
-    }
-    else {
-      updatedQuantity = quantity - 1;
-    }
-    setQuantity(updatedQuantity);
-    dispatch(updateItem(props.itemId, parseInt(updatedQuantity)));
   }
 
   return (
@@ -45,33 +26,37 @@ const CartProduct = (props) => {
         {location.pathname === "/order" || location.pathname === "/pastorders" ?
           <Card.Text>Quantity: {props.quantity}</Card.Text>
           : 
-          <Form inline className="mb-2">
-          <Form.Label>Quantity: &nbsp;</Form.Label>
-          <InputGroup className="form-inline" size="sm">
-            <InputGroup.Prepend>
-              <Button
-                variant="outline-secondary"
-                value={"-"}
-                onClick={(e) => quantityChanged(e, "-")}
-              >
-                <MdRemove />
-              </Button>
-            </InputGroup.Prepend>
-            {/* <Form.Control size="sm" name="foo" value={props.quantity || props.quantityVal} onChange={e => props.handleQuantUpdate(e)} /> */}
-            <InputGroup.Text>
-              {props.quantity || 1}
-            </InputGroup.Text>
-            <InputGroup.Append>
-              <Button
-                variant="outline-secondary"
-                value={"+"}
-                onClick={(e) => quantityChanged(e, "+")}
-              >
-                <MdAdd />
-              </Button>
-            </InputGroup.Append>
-          </InputGroup>
-        </Form>
+          <Quantity 
+            quantity={props.quantity}
+            itemId={props.itemId}
+          />
+        //   <Form inline className="mb-2">
+        //   <Form.Label>Quantity: &nbsp;</Form.Label>
+        //   <InputGroup className="form-inline" size="sm">
+        //     <InputGroup.Prepend>
+        //       <Button
+        //         variant="outline-secondary"
+        //         value={"-"}
+        //         onClick={(e) => quantityChanged(e, "-")}
+        //       >
+        //         <MdRemove />
+        //       </Button>
+        //     </InputGroup.Prepend>
+        //     {/* <Form.Control size="sm" name="foo" value={props.quantity || props.quantityVal} onChange={e => props.handleQuantUpdate(e)} /> */}
+        //     <InputGroup.Text>
+        //       {props.quantity || 1}
+        //     </InputGroup.Text>
+        //     <InputGroup.Append>
+        //       <Button
+        //         variant="outline-secondary"
+        //         value={"+"}
+        //         onClick={(e) => quantityChanged(e, "+")}
+        //       >
+        //         <MdAdd />
+        //       </Button>
+        //     </InputGroup.Append>
+        //   </InputGroup>
+        // </Form>
       }
       </Card.Body>
       {location.pathname !== "/order" && (
