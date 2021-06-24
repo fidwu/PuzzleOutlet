@@ -7,14 +7,16 @@ import PaymentForm from "../components/PaymentForm";
 import Shipping from "../components/Shipping";
 import Confirm from "../components/Confirm";
 import OrderSummary from "../components/OrderSummary";
+import "react-datepicker/dist/react-datepicker.css";
+import "../css/datepicker.css";
 
 const PlaceOrder = (props) => {
   const [activeTab, setActiveTab] = useState(0);
+  const [expDate, setExpDate] = useState(false);
   const shippingFormValues = {
     fname: "",
     lname: "",
     email: "",
-    phoneNum: "",
     address: "",
     city: "",
     zip: "",
@@ -22,7 +24,6 @@ const PlaceOrder = (props) => {
   };
   const paymentFormValues = {
     cardNum: "",
-    expDate: "",
     cvc: "",
   };
   const [shippingValues, setShippingFormValues] = useState(shippingFormValues);
@@ -43,6 +44,12 @@ const PlaceOrder = (props) => {
     }
   };
 
+  const handleDateChange = (date) => {
+    setExpDate(date);
+    console.log(date);
+
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -50,7 +57,6 @@ const PlaceOrder = (props) => {
       fname: shippingValues.fname,
       lname: shippingValues.lname,
       email: shippingValues.email,
-      phoneNum: shippingValues.phoneNum,
       address: shippingValues.address,
       city: shippingValues.city,
       zip: shippingValues.zip,
@@ -59,11 +65,46 @@ const PlaceOrder = (props) => {
 
     const paymentVal = {
       cardNum: paymentValues.cardNum,
-      expDate: paymentValues.expDate,
       cvc: paymentValues.cvc,
     };
 
     console.log(shippingVal, paymentVal);
+    console.log(props.cartItems);
+    console.log(props.totalPrice);
+
+    const payload = {
+      user: "tempUser",
+      orderTotal: props.totalPrice,
+      order: props.cartItems,
+      shipping: shippingVal,
+      payment: {
+        ...paymentVal,
+        expDate: expDate
+      }
+    };
+    console.log(payload);
+
+    if (paymentVal && shippingVal) {
+      fetch("/orders", {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((response) => {
+          console.log(response);
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          console.log("Success:", JSON.stringify(data));
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
   };
 
   const handleTabChange = (e, change) => {
@@ -131,6 +172,8 @@ const PlaceOrder = (props) => {
             <PaymentForm
               toNextTab={(e) => handleTabChange(e)}
               values={paymentValues}
+              expDate={expDate}
+              handleDate={handleDateChange}
               handleInputChange={(e) => handleInputChange(e)}
               handleSubmit={(e) => handleSubmit(e)}
             />
@@ -139,15 +182,22 @@ const PlaceOrder = (props) => {
             <Confirm
               shippingValues={shippingValues}
               paymentValues={paymentValues}
+              expDate={expDate}
             />
           </Tab>
         </Tabs>
+          {/* <Datepicker 
+            selected={expDate ? expDate : null}
+            onChange={(date) => handleDateChange(date)}
+            placeholderText="Expiration Date"
+            dateFormat="MM/yy"
+            showMonthYearPicker
+          /> */}
         <div className="d-flex">
           <Button
             variant="primary"
             type="submit"
             onClick={(e) => {
-              handleSubmit(e);
               handleTabChange(e, -1);
             }}
             className="d-flex"
@@ -160,7 +210,6 @@ const PlaceOrder = (props) => {
             variant="primary"
             type="submit"
             onClick={(e) => {
-              handleSubmit(e);
               handleTabChange(e, 1);
             }}
             className="d-flex ml-auto"
@@ -172,7 +221,7 @@ const PlaceOrder = (props) => {
           variant="primary"
           type="submit"
           onClick={(e) => {
-            handleSubmit(e);
+            handleSubmit(e, true);
             handleTabChange(e, 0);
           }}
           className="d-flex ml-auto"

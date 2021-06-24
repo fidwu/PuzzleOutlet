@@ -1,0 +1,15 @@
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+/* apply bootstrap styling to datepicker input box */
+input {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
