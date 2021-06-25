@@ -3,6 +3,7 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import { useHistory } from "react-router-dom";
 import PaymentForm from "../components/PaymentForm";
 import Shipping from "../components/Shipping";
 import Confirm from "../components/Confirm";
@@ -11,6 +12,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../css/datepicker.css";
 
 const PlaceOrder = (props) => {
+  const history = useHistory();
+
   const [activeTab, setActiveTab] = useState(0);
   const [expDate, setExpDate] = useState(false);
   const shippingFormValues = {
@@ -105,6 +108,7 @@ const PlaceOrder = (props) => {
           console.error("Error:", error);
         });
     }
+    history.push('/');
   };
 
   const handleTabChange = (e, change) => {
@@ -186,13 +190,6 @@ const PlaceOrder = (props) => {
             />
           </Tab>
         </Tabs>
-          {/* <Datepicker 
-            selected={expDate ? expDate : null}
-            onChange={(date) => handleDateChange(date)}
-            placeholderText="Expiration Date"
-            dateFormat="MM/yy"
-            showMonthYearPicker
-          /> */}
         <div className="d-flex">
           <Button
             variant="primary"

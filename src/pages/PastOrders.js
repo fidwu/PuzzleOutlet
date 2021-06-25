@@ -27,19 +27,19 @@ const PastOrders = (props) => {
               <div key={id} className="mb-3">
                 <Card.Header as="h5" className="d-flex">
                   <div>Placed {formatDate(orders.date)}</div>
-                  <div className="ml-auto orderTotalPrice">${orders.total}</div>
+                  <div className="ml-auto orderTotalPrice">${orders.orderTotal}</div>
                 </Card.Header>
                 <ListGroup>
-                {orders.orders.map((item, id) => {
+                {orders.order.map((item, id) => {
                   return (
                     <ListGroup.Item key={id}>
-                    <CartProduct
-                      key={id}
-                      item={item.product}
-                      price={item.price + " ea."}
-                      image={item.image}
-                      quantity={item.quantityBought}
-                    />
+                      <CartProduct
+                        key={id}
+                        item={item.product}
+                        price={item.price + " ea."}
+                        image={item.image}
+                        quantity={item.quantity}
+                      />
                     </ListGroup.Item>
                   );
                 })}

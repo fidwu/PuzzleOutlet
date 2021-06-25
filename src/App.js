@@ -1,5 +1,6 @@
 import "./App.css";
 import "./App.scss";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
@@ -7,9 +8,17 @@ import Cart from "./pages/Cart";
 import PastOrders from "./pages/PastOrders";
 import Header from "./components/Navbar";
 import PlaceOrder from "./pages/PlaceOrder";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchOrders } from './redux/ActionCreators';
 
 function App() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("time to fetch orders");
+    dispatch(fetchOrders());
+  }, [dispatch])
 
   // inventory - list of products being sold
   const inventory = useSelector((state) => state.inventory);
@@ -26,13 +35,9 @@ function App() {
     }});
   });
 
-  // bought - info on products bought
-  const bought = useSelector((state) => {
-    return state.bought.map((val, id) => ({
-      ...val,
-      ...inventory[id],
-    }));
-  });
+  const orders = useSelector((state) => state.orders.data);
+
+  console.log(orders);
 
   // updatedItemAmtInventory - list of inventory items, and quantity added to cart
   const updatedItemAmtInventory = useSelector((state) => {
@@ -44,8 +49,7 @@ function App() {
     }))
   });
 
-  // console.log(updatedItemAmtInventory);
-  console.log(cart);
+  console.log(updatedItemAmtInventory);
   // console.log(bought);
 
   const CartComponent = () => {
@@ -60,38 +64,8 @@ function App() {
   };
 
   const pastOrdersComponent = () => {
-
-    // sort past orders/bought array data by date
-    const sortByDate = bought
-      .slice()
-      .sort((a, b) => new Date(b.dateBought) - new Date(a.dateBought));
-
-    // group items by date - type object
-    // key: date bought, values: items
-    const groupByDate = sortByDate.reduce((total, current) => {
-      const date = new Date(current.dateBought);
-      if (!total[date]) {
-        total[date] = [];
-      }
-      total[date].push(current);
-      return total;
-    }, {});
-
-    // past orders array sorted and grouped by date with total price and orders info
-    const pastOrders = Object.keys(groupByDate).map((date) => {
-      const totalPrice = groupByDate[date].reduce((total, current) => {
-        return total + current.price.substring(1) * current.quantityBought;
-      }, 0);
-      return {
-        date: date,
-        total: totalPrice,
-        orders: groupByDate[date],
-      };
-    }); 
-
-    console.log(pastOrders);
-
-    return <PastOrders pastOrders={pastOrders} />;
+    console.log(orders);
+    return <PastOrders pastOrders={orders} />;
   };
 
   const PlaceOrderComponent = () => {

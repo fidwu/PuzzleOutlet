@@ -22,3 +22,34 @@ export const deleteItem = (itemId) => ({
         itemId
     }
 })
+
+export const fetchOrders = () => (dispatch) => {
+    dispatch(fetchOrdersBegin());
+    const user = "tempUser";
+    return fetch(`/orders/${user}`)
+        .then((response) => {
+          console.log(response);
+          return response.json();
+        })
+        .then((data) => {
+            dispatch(fetchOrdersSuccess(data));
+            return data;
+        })
+        .catch((error) => {
+            dispatch(fetchOrdersError());
+            console.error("Error:", error);
+        });
+};
+
+export const fetchOrdersBegin = () => ({
+    type: ActionTypes.FETCH_ORDERS_BEGIN
+})
+
+export const fetchOrdersSuccess = (orders) => ({
+    type: ActionTypes.FETCH_ORDERS_SUCCESS,
+    payload: orders
+});
+
+export const fetchOrdersError = () => ({
+    type: ActionTypes.FETCH_ORDERS_ERROR
+})
