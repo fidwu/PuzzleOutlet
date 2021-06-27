@@ -53,3 +53,34 @@ export const fetchOrdersSuccess = (orders) => ({
 export const fetchOrdersError = () => ({
     type: ActionTypes.FETCH_ORDERS_ERROR
 })
+
+export const fetchItemsBegin = () => ({
+    type: ActionTypes.FETCH_ITEMS_BEGIN
+})
+
+export const fetchItemsSuccess = (items) => ({
+    type: ActionTypes.FETCH_ITEMS_SUCCESS,
+    payload: items
+});
+
+export const fetchItemsError = () => ({
+    type: ActionTypes.FETCH_ITEMS_ERROR
+})
+
+
+export const fetchItems = () => (dispatch) => {
+    dispatch(fetchItemsBegin());
+    return fetch(`/items`)
+        .then((response) => {
+          console.log(response);
+          return response.json();
+        })
+        .then((data) => {
+            dispatch(fetchItemsSuccess(data));
+            return data;
+        })
+        .catch((error) => {
+            dispatch(fetchItemsError());
+            console.error("Error:", error);
+        });
+};

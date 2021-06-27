@@ -9,7 +9,7 @@ import PastOrders from "./pages/PastOrders";
 import Header from "./components/Navbar";
 import PlaceOrder from "./pages/PlaceOrder";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchOrders } from './redux/ActionCreators';
+import { fetchOrders, fetchItems } from './redux/ActionCreators';
 
 function App() {
 
@@ -40,16 +40,16 @@ function App() {
   console.log(orders);
 
   // updatedItemAmtInventory - list of inventory items, and quantity added to cart
-  const updatedItemAmtInventory = useSelector((state) => {
-    return state.inventory.map((val, id) => ({
-      ...val,
-      ...cart.find((item) => {
-        return (item.itemId === val.itemId)
-      })
-    }))
-  });
+  // const updatedItemAmtInventory = useSelector((state) => {
+  //   return state.inventory.map((val, id) => ({
+  //     ...val,
+  //     ...cart.find((item) => {
+  //       return (item.itemId === val.itemId)
+  //     })
+  //   }))
+  // });
 
-  console.log(updatedItemAmtInventory);
+  // console.log(updatedItemAmtInventory);
   // console.log(bought);
 
   const CartComponent = () => {
@@ -90,7 +90,7 @@ function App() {
           <Route exact path="/order" component={PlaceOrderComponent} />
           <Route
             path="/:id"
-            render={() => <Product inventory={updatedItemAmtInventory} cart={cart} />}
+            render={() => <Product inventory={inventory} cart={cart} />}
           />
         </Switch>
       </Router>

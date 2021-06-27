@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { Cart } from './cart';
 import { Inventory } from "./inventory";
+import { Items } from "./items";
 import { Orders } from "./orders";
 
 export const ConfigureStore = () => {
@@ -9,6 +10,7 @@ export const ConfigureStore = () => {
     combineReducers({
       cart: Cart,
       inventory: Inventory,
+      items: Items, 
       orders: Orders
     }),
     applyMiddleware(thunk)

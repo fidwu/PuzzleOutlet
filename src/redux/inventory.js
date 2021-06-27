@@ -1,4 +1,4 @@
-import { InventoryData } from '../data/Inventory';
+import { InventoryData } from '../data/inventory';
 
 export const Inventory = (state = InventoryData, action) => {
     switch (action.type) {

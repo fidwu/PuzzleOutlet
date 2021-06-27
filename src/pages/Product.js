@@ -22,12 +22,12 @@ const Product = (props) => {
   const addToCart = () => {
     dispatch(addItem(product.itemId, 1));
     const payload = {
-      user: "tempUser",
       itemId: product.itemId,
       quantity: 1,
     };
     console.log(payload);
-    fetch("/cart", {
+    let tempUser = "tempUser";
+    fetch(`/cart/${tempUser}`, {
       method: "post",
       headers: {
         Accept: "application/json",
