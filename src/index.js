@@ -5,8 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { ConfigureStore } from './redux/configureStore';
+import { fetchOrders, fetchItems, fetchCartItems } from './redux/ActionCreators';
 
 const store = ConfigureStore();
+store.dispatch(fetchItems());
+store.dispatch(fetchCartItems());
+store.dispatch(fetchOrders());
 
 ReactDOM.render(
   <Provider store={store}>

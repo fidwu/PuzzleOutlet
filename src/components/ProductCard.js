@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 const ProductCard = (props) => {
   const history = useHistory();
 
-  const handleCardClick = (id) => history.push(`/${id}`);
+  const handleCardClick = (id) => history.push(`/item/${id}`);
 
   return (
     <Card

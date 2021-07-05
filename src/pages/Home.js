@@ -16,7 +16,7 @@ function Home(props) {
             {props.inventory.map((item, id) => (
               <Col md={3} sm={6} key={id}>
                 <ProductCard
-                  id={item.itemId}
+                  id={item._id}
                   image={item.image}
                   price={item.price}
                   item={item.product}

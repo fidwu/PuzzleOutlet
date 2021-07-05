@@ -5,13 +5,17 @@ import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
 import { NavLink, useLocation } from "react-router-dom";
 import { matchPath } from "react-router";
+import { useSelector } from "react-redux";
 
 const Header = (props) => {
   const pathname = useLocation().pathname;
 
+  const cartLoading = useSelector((state) => state.cart.loading);
+
+  // regex :id(\\^[a-z0-9]+)
   const checkPathId = () => {
     const match = matchPath(pathname, {
-      path: ["/", "/:id(\\d+)"],
+      path: ["/", "/item/:id"],
       exact: true,
     });
     return match;
@@ -38,7 +42,7 @@ const Header = (props) => {
           <NavLink exact to="/cart">
             Cart{" "}
             <Badge pill variant="info">
-              {props.numCartItems}
+              {cartLoading ? ` ` : props.numCartItems}
             </Badge>
           </NavLink>
           <NavLink exact to="/pastorders">

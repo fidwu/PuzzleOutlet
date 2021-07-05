@@ -1,34 +1,74 @@
 import * as ActionTypes from './ActionTypes';
 
-export const addItem = (itemId, quantity) => ({
-    type: ActionTypes.ADD_ITEM,
-    payload: {
-        itemId,
-        quantity
-    }
-});
+export const addItem = (item) => dispatch => {
+    console.log(item);
+    dispatch({
+        type: ActionTypes.ADD_ITEM,
+        payload: item
+    })
+    return fetch(`/cart`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(item),
+      })
+        .then((response) => {
+          console.log(response);
+          return response.json();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+};
 
-export const updateItem = (itemId, quantity) => ({
-    type: ActionTypes.UPDATE_ITEM,
-    payload: {
-        itemId,
-        quantity
-    }
-})
+export const updateItem = (item) => dispatch => {
+    dispatch({
+        type: ActionTypes.UPDATE_ITEM,
+        payload: item
+    })
+    return fetch(`/cart/tempUser/${item.itemId}`, {
+        method: "put",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(item),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+};
 
-export const deleteItem = (itemId) => ({
-    type: ActionTypes.DELETE_ITEM,
-    payload: {
-        itemId
-    }
-})
+export const deleteItem = (itemId) => dispatch => {
+    dispatch({
+        type: ActionTypes.DELETE_ITEM,
+        payload: itemId
+    })
+    return fetch(`/cart/tempUser/${itemId}`, {
+        method: "delete",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+}
 
 export const fetchOrders = () => (dispatch) => {
     dispatch(fetchOrdersBegin());
     const user = "tempUser";
     return fetch(`/orders/${user}`)
         .then((response) => {
-          console.log(response);
           return response.json();
         })
         .then((data) => {
@@ -36,7 +76,41 @@ export const fetchOrders = () => (dispatch) => {
             return data;
         })
         .catch((error) => {
-            dispatch(fetchOrdersError());
+            dispatch(fetchOrdersError(error.message));
+            console.error("Error:", error);
+        });
+};
+
+export const fetchCartBegin = () => ({
+    type: ActionTypes.FETCH_CART_BEGIN
+})
+
+export const fetchCartSuccess = (cart) => ({
+    type: ActionTypes.FETCH_CART_SUCCESS,
+    payload: cart
+});
+
+export const fetchCartError = (errMsg) => ({
+    type: ActionTypes.FETCH_CART_ERROR,
+    payload: errMsg
+})
+
+export const fetchCartItems = () => (dispatch) => {
+    dispatch(fetchCartBegin());
+    console.log("fetching cart items here");
+    return fetch(`/cart/tempUser`)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+            dispatch(fetchCartSuccess(data));
+            console.log("cart items fetching: ", data);
+            // dispatch(fetchItemsSuccess(data));
+            return data;
+        })
+        .catch((error) => {
+            dispatch(fetchCartError(error.message));
+            // dispatch(fetchItemsError());
             console.error("Error:", error);
         });
 };
@@ -50,8 +124,9 @@ export const fetchOrdersSuccess = (orders) => ({
     payload: orders
 });
 
-export const fetchOrdersError = () => ({
-    type: ActionTypes.FETCH_ORDERS_ERROR
+export const fetchOrdersError = (errMsg) => ({
+    type: ActionTypes.FETCH_ORDERS_ERROR,
+    payload: errMsg
 })
 
 export const fetchItemsBegin = () => ({
@@ -63,8 +138,9 @@ export const fetchItemsSuccess = (items) => ({
     payload: items
 });
 
-export const fetchItemsError = () => ({
-    type: ActionTypes.FETCH_ITEMS_ERROR
+export const fetchItemsError = (errMsg) => ({
+    type: ActionTypes.FETCH_ITEMS_ERROR,
+    payload: errMsg
 })
 
 
@@ -72,15 +148,15 @@ export const fetchItems = () => (dispatch) => {
     dispatch(fetchItemsBegin());
     return fetch(`/items`)
         .then((response) => {
-          console.log(response);
           return response.json();
         })
         .then((data) => {
             dispatch(fetchItemsSuccess(data));
+            console.log("items fetching next: ", data);
             return data;
         })
         .catch((error) => {
-            dispatch(fetchItemsError());
+            dispatch(fetchItemsError(error.message));
             console.error("Error:", error);
         });
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import { useParams, withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -7,92 +7,75 @@ import Button from "react-bootstrap/Button";
 import ReactStars from "react-rating-stars-component";
 import Image from "react-bootstrap/Image";
 import Quantity from "../components/Quantity";
+import { useSelector } from "react-redux";
 
-const Product = (props) => {
+const Product = () => {
   const { id } = useParams();
 
-  const product = props.inventory.filter(
-    (item) => item.itemId === parseInt(id)
-  )[0];
+  const [productData, setProductData] = useState([]);
+  const [quantity, setQuantity] = useState(0);
 
-  console.log(product);
+  const itemsLoading = useSelector((state) => state.items.loading);
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+
+    const fetchItemDetails = async () => {
+      // fetch item details
+      const response = await fetch(`/items/${id}`);
+      const result = await response.json();
+      setProductData(result);
+
+      // get quantity if the item is in the cart already
+      let cartQuantity = await fetch(`/cart/tempUser/${id}`);
+      cartQuantity = await cartQuantity.json()
+      setQuantity(cartQuantity ? cartQuantity.quantity : 0);
+
+    };
+
+    fetchItemDetails();
+
+  }, [id]);
+
+  // setQuantity(quantityRes ? quantityRes.quantity : 0);
+
   const addToCart = () => {
-    dispatch(addItem(product.itemId, 1));
     const payload = {
-      itemId: product.itemId,
+      username: "tempUser",
       quantity: 1,
+      itemId: id,
+      product: productData.product,
+      price: productData.price,
+      image: productData.image,
     };
     console.log(payload);
-    let tempUser = "tempUser";
-    fetch(`/cart/${tempUser}`, {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((response) => {
-        console.log(response);
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        console.log("Success:", JSON.stringify(data));
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    setQuantity(1);
+    dispatch(addItem(payload));
   };
 
-  useEffect(() => {
-    inCart();
-  });
-
-  const inCart = () => {
-    const matchCartItem = props.cart.filter(
-      (item) => item.itemId === product.itemId
-    )[0];
-
-    if (matchCartItem) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  return (
-    <>
+  if (itemsLoading) {
+    return <h1>Loading...</h1>;
+  } 
+  
+  else {
+    return (
       <Container fluid>
-        {/* <ProductDescription
-          image={product.image}
-          price={product.price}
-          product={product.product}
-          rating={product.rating}
-          quantity={product.quantity || quantity}
-          itemId={product.itemId}
-          addToCart={() => addToCart()}
-          inCart={() => inCart()}
-          handleQuantUpdate={quantityChanged}
-        /> */}
         <div className="productDescription">
           <div className="productDetails">
-            <Image rounded src={product.image} />
+            <Image rounded src={productData.image} />
 
             <div className="productInfo">
               <div className="product">
-                <h2 className="">{product.product}</h2>
-                <h4 className="">{product.price}</h4>
+                <h2 className="">{productData.product}</h2>
+                <h4 className="">{productData.price}</h4>
                 <div className="star-rating">
                   <ReactStars
                     count={5}
                     size={30}
                     isHalf={true}
                     edit={false}
-                    value={product.rating}
+                    value={productData.rating}
                   />
                   <span>&nbsp; &nbsp; | &nbsp; &nbsp; 1 review</span>
                 </div>
@@ -100,36 +83,9 @@ const Product = (props) => {
 
               <div className="buyProduct">
                 <div className="actionsDisplay">
-                  {inCart() || product.quantity > 0 ? (
-                    <Quantity quantity={product.quantity} itemId={product.itemId} />
+                  {quantity > 0 ? (
+                    <Quantity quantity={quantity} itemId={id} updateQuantity={setQuantity} />
                   ) : (
-                    // <Form inline className="mb-2" method="POST">
-                    //   <Form.Label>Quantity: &nbsp;</Form.Label>
-                    //   <InputGroup className="form-inline" size="sm">
-                    //     <InputGroup.Prepend>
-                    //       <Button
-                    //         variant="outline-secondary"
-                    //         value={"-"}
-                    //         onClick={(e) => props.handleQuantUpdate(e, "-")}
-                    //       >
-                    //         <MdRemove />
-                    //       </Button>
-                    //     </InputGroup.Prepend>
-                    //     {/* <Form.Control size="sm" name="foo" value={props.quantity || props.quantityVal} onChange={e => props.handleQuantUpdate(e)} /> */}
-                    //     <InputGroup.Text>
-                    //       {props.quantity || 1}
-                    //     </InputGroup.Text>
-                    //     <InputGroup.Append>
-                    //       <Button
-                    //         variant="outline-secondary"
-                    //         value={"+"}
-                    //         onClick={(e) => props.handleQuantUpdate(e, "+")}
-                    //       >
-                    //         <MdAdd />
-                    //       </Button>
-                    //     </InputGroup.Append>
-                    //   </InputGroup>
-                    // </Form>
                     <Button onClick={addToCart}>Add to Cart</Button>
                   )}
                 </div>
@@ -175,7 +131,7 @@ const Product = (props) => {
                 size={30}
                 isHalf={true}
                 edit={false}
-                value={product.rating}
+                value={productData.rating}
               />
               <span>(Reviewed 1/1/21)</span>
             </div>
@@ -183,8 +139,8 @@ const Product = (props) => {
           </div>
         </div>
       </Container>
-    </>
-  );
+    );
+  }
 };
 
 export default withRouter(Product);

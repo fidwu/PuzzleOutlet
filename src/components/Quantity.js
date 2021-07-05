@@ -3,15 +3,18 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useDispatch } from "react-redux";
-import { updateItem } from "../redux/ActionCreators";
+import { updateItem, deleteItem } from "../redux/ActionCreators";
 import { MdAdd } from "react-icons/md";
 import { MdRemove } from "react-icons/md";
+import { useLocation } from "react-router-dom";
 
 const Quantity = (props) => {
-
-  const [quantity, setQuantity] = useState(props.quantity || 0);
+  
+  const [quantity, setQuantity] = useState(props.quantity);
 
   const dispatch = useDispatch();
+
+  let location = useLocation();
 
   const quantityChanged = (e, type) => {
     e.preventDefault();
@@ -24,33 +27,22 @@ const Quantity = (props) => {
     }
 
     setQuantity(updatedQuantity);
-    dispatch(updateItem(props.itemId, parseInt(updatedQuantity)));
 
     const payload = {
-      user: "tempUser",
       itemId: props.itemId,
       quantity: updatedQuantity,
     };
 
-    fetch(`/cart/${props.itemId}`, {
-      method: `${updatedQuantity !== 0 ? "put" : "delete"}`,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: updatedQuantity !== 0 ? JSON.stringify(payload) : null,
-    })
-      .then((response) => {
-        console.log(JSON.stringify(response));
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        console.log("Success:", JSON.stringify(data));
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    if (updatedQuantity <= 0) {
+      console.log("DELETING.....");
+      dispatch(deleteItem(props.itemId));
+      if (location.pathname !== "/cart")
+        props.updateQuantity(0);
+    }
+    else {
+      console.log("UPDATING...");
+      dispatch(updateItem(payload));
+    }
   };
 
   return (
@@ -67,8 +59,7 @@ const Quantity = (props) => {
               <MdRemove />
             </Button>
           </InputGroup.Prepend>
-          {/* <Form.Control size="sm" name="foo" value={props.quantity || props.quantityVal} onChange={e => props.handleQuantUpdate(e)} /> */}
-          <InputGroup.Text>{props.quantity || 1}</InputGroup.Text>
+          <InputGroup.Text>{quantity || 1}</InputGroup.Text>
           <InputGroup.Append>
             <Button
               variant="outline-secondary"

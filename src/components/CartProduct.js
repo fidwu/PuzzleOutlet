@@ -3,8 +3,8 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { deleteItem } from '../redux/ActionCreators';
 import Quantity from './Quantity';
+import { deleteItem } from "../redux/ActionCreators";
 
 const CartProduct = (props) => {
   let location = useLocation();
@@ -13,7 +13,6 @@ const CartProduct = (props) => {
 
   const deleteFromCart = (e) => {
     e.preventDefault();
-    console.log(props);
     dispatch(deleteItem(props.itemId));
   }
 
@@ -30,33 +29,6 @@ const CartProduct = (props) => {
             quantity={props.quantity}
             itemId={props.itemId}
           />
-        //   <Form inline className="mb-2">
-        //   <Form.Label>Quantity: &nbsp;</Form.Label>
-        //   <InputGroup className="form-inline" size="sm">
-        //     <InputGroup.Prepend>
-        //       <Button
-        //         variant="outline-secondary"
-        //         value={"-"}
-        //         onClick={(e) => quantityChanged(e, "-")}
-        //       >
-        //         <MdRemove />
-        //       </Button>
-        //     </InputGroup.Prepend>
-        //     {/* <Form.Control size="sm" name="foo" value={props.quantity || props.quantityVal} onChange={e => props.handleQuantUpdate(e)} /> */}
-        //     <InputGroup.Text>
-        //       {props.quantity || 1}
-        //     </InputGroup.Text>
-        //     <InputGroup.Append>
-        //       <Button
-        //         variant="outline-secondary"
-        //         value={"+"}
-        //         onClick={(e) => quantityChanged(e, "+")}
-        //       >
-        //         <MdAdd />
-        //       </Button>
-        //     </InputGroup.Append>
-        //   </InputGroup>
-        // </Form>
       }
       </Card.Body>
       {location.pathname !== "/order" && (

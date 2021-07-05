@@ -1,6 +1,6 @@
 import "./App.css";
 import "./App.scss";
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
@@ -8,90 +8,35 @@ import Cart from "./pages/Cart";
 import PastOrders from "./pages/PastOrders";
 import Header from "./components/Navbar";
 import PlaceOrder from "./pages/PlaceOrder";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchOrders, fetchItems } from './redux/ActionCreators';
+import { useSelector } from "react-redux";
 
 function App() {
 
-  const dispatch = useDispatch();
+  // items - list of products being sold
+  const items = useSelector((state) => state.items.data);
+  console.log(items);
 
-  useEffect(() => {
-    console.log("time to fetch orders");
-    dispatch(fetchOrders());
-  }, [dispatch])
-
-  // inventory - list of products being sold
-  const inventory = useSelector((state) => state.inventory);
-
-  // cart - info on products being added to cart
-  const cart = useSelector((state) => {
-    return state.cart.map((val, id) => {
-      console.log(val);
-      return {
-      ...val,
-      ...inventory.find((item) => {
-        return (item.itemId === val.itemId)
-      })
-    }});
-  });
+  const cart = useSelector((state) => state.cart.data);
+  console.log("cart:", cart);
 
   const orders = useSelector((state) => state.orders.data);
-
   console.log(orders);
 
-  // updatedItemAmtInventory - list of inventory items, and quantity added to cart
-  // const updatedItemAmtInventory = useSelector((state) => {
-  //   return state.inventory.map((val, id) => ({
-  //     ...val,
-  //     ...cart.find((item) => {
-  //       return (item.itemId === val.itemId)
-  //     })
-  //   }))
-  // });
-
-  // console.log(updatedItemAmtInventory);
-  // console.log(bought);
-
-  const CartComponent = () => {
-
-    // use reduce to get the total amount
-    const totalPrice = cart.reduce(
-      (total, current) => total + current.price.substring(1) * current.quantity,
-      0
-    );
-
-    return <Cart cartItems={cart} totalPrice={totalPrice} />;
-  };
-
-  const pastOrdersComponent = () => {
-    console.log(orders);
-    return <PastOrders pastOrders={orders} />;
-  };
-
-  const PlaceOrderComponent = () => {
-
-    // use reduce to get the total amount
-    const totalPrice = cart.reduce(
-      (total, current) => total + current.price.substring(1) * current.quantity,
-      0
-    );
-
-    return <PlaceOrder cartItems={cart} totalPrice={totalPrice} />;
-  };
+  const totalPrice = cart.reduce(
+    (total, current) => total + current.price.substring(1) * current.quantity,
+    0
+  );
 
   return (
     <div className="App">
       <Router>
         <Header numCartItems={cart.length} />
         <Switch>
-          <Route exact path="/" render={() => <Home inventory={inventory} />} />
-          <Route exact path="/pastorders" component={pastOrdersComponent} />
-          <Route exact path="/cart" component={CartComponent} />
-          <Route exact path="/order" component={PlaceOrderComponent} />
-          <Route
-            path="/:id"
-            render={() => <Product inventory={inventory} cart={cart} />}
-          />
+          <Route exact path="/" render={() => <Home inventory={items} />} />
+          <Route exact path="/pastorders" render={() => <PastOrders pastOrders={orders} />} />
+          <Route exact path="/cart" render={() => <Cart cart={cart} totalPrice={totalPrice} />} />
+          <Route exact path="/order" render={() => <PlaceOrder cartItems={cart} totalPrice={totalPrice} />} />
+          <Route path="/item/:id" component={Product} />
         </Switch>
       </Router>
     </div>

@@ -1,35 +1,67 @@
-import { CartData } from "../data/Cart";
 import * as ActionTypes from "./ActionTypes";
 
-export const Cart = (state = CartData, action) => {
+const initialState = {
+  data: [],
+  loading: false,
+  error: null,
+};
+
+export const Cart = (state = initialState, action) => {
+
   switch (action.type) {
 
     case ActionTypes.ADD_ITEM:
       const item = action.payload;
-      return state.concat(item);
+      return {
+        ...state,
+        data: [...state.data, item],
+      }
     
     case ActionTypes.UPDATE_ITEM:
-      let updatedState = state.map((item) => {
-        console.log(action.payload);
-        // if not same item id, keep original
-        if (item.itemId !== action.payload.itemId) {
-          return item;
-        }
-        // otherwise, update to new
-        return {
-          ...item,
-          ...action.payload,
-        };
+      let updatedState = state.data.map(item => {
+        if(item.itemId === action.payload.itemId)
+           return {
+             ...item,
+             quantity: action.payload.quantity
+           }
+        return item
       });
-      updatedState = updatedState.filter((item) => item.quantity !== 0);
-      console.log(updatedState);
-      return updatedState;
+      return {
+        ...state,
+        data: updatedState
+      };
 
     case ActionTypes.DELETE_ITEM:
-      const filteredArray = state.filter((val) => { 
-        return val.itemId !== action.payload.itemId
+      const filteredArray = state.data.filter((val) => { 
+        return val.itemId !== action.payload
       });
-      return filteredArray;
+      return {
+        ...state,
+        data: filteredArray
+      };
+
+    case ActionTypes.FETCH_CART_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+        data: []
+      };
+  
+    case ActionTypes.FETCH_CART_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+      };
+  
+    case ActionTypes.FETCH_CART_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        data: [],
+      };
 
     default:
       return state;
