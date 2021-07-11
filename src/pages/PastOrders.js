@@ -2,8 +2,6 @@ import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import CartProduct from '../components/CartProduct';
-// import { User } from '../data/User';
-// import { InventoryData } from '../data/InventoryData';
 
 const PastOrders = (props) => {
 

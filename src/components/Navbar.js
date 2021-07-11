@@ -41,7 +41,7 @@ const Header = (props) => {
           </NavLink>
           <NavLink exact to="/cart">
             Cart{" "}
-            <Badge pill variant="info">
+            <Badge pill variant="info" className="align-middle">
               {cartLoading ? ` ` : props.numCartItems}
             </Badge>
           </NavLink>

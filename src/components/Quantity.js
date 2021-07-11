@@ -6,15 +6,12 @@ import { useDispatch } from "react-redux";
 import { updateItem, deleteItem } from "../redux/ActionCreators";
 import { MdAdd } from "react-icons/md";
 import { MdRemove } from "react-icons/md";
-import { useLocation } from "react-router-dom";
 
 const Quantity = (props) => {
   
   const [quantity, setQuantity] = useState(props.quantity);
 
   const dispatch = useDispatch();
-
-  let location = useLocation();
 
   const quantityChanged = (e, type) => {
     e.preventDefault();
@@ -36,8 +33,6 @@ const Quantity = (props) => {
     if (updatedQuantity <= 0) {
       console.log("DELETING.....");
       dispatch(deleteItem(props.itemId));
-      if (location.pathname !== "/cart")
-        props.updateQuantity(0);
     }
     else {
       console.log("UPDATING...");

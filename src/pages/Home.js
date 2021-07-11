@@ -14,7 +14,7 @@ function Home(props) {
         <h2 className="mb-3">Shop Products</h2>
           <Row>
             {props.inventory.map((item, id) => (
-              <Col md={3} sm={6} key={id}>
+              <Col md={4} sm={6} key={id} >
                 <ProductCard
                   id={item._id}
                   image={item.image}

@@ -1,19 +1,17 @@
-.active {
-  font-weight: bold;
-}
-.navbar {
-  margin-bottom: 1em;
-}
-.navbar-nav a {
-  padding: 0 2vw;
-  color: white;
-  text-decoration: none;
-}
-hr {
-  margin: 5px 0;
-}
 .card {
+  margin: 0 auto;
   margin-bottom: 20px;
+  max-width: 70%;
+}
+
+@media only screen and (max-width: 1050px) {
+  .card {
+    max-width: 85%;
+  }
+}
+
+.card-header {
+  border-bottom: none;
 }
 .star-rating {
   margin-top: -8px;
@@ -27,7 +25,6 @@ hr {
   flex-direction: column;
   justify-content: center;
 }
-
 .productDetails {
   margin-bottom: 1em;
   width: 100%;
@@ -63,13 +60,8 @@ hr {
   }
 }
 
-.card-header {
-  border-bottom: none;
-}
-
-.container-fluid {
-  padding-left: 30px;
-  padding-right: 30px;
+.aboutProduct p {
+  white-space: pre-wrap;
 }
 
 .shoppingCart,

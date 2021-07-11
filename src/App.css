@@ -3,3 +3,33 @@
   display: flex;
   flex-direction: column;
 }
+
+/* Navbar */
+.active {
+  font-weight: bold;
+}
+
+.navbar {
+  margin-bottom: 1em;
+}
+
+.navbar-nav a {
+  padding: 0 2vw;
+  color: white;
+  text-decoration: none;
+}
+
+hr {
+  margin: 5px 0;
+}
+
+.badge {
+  min-width: 18px;
+  min-height: 18px;
+  height: 18px;
+}
+
+.container-fluid {
+  padding-left: 30px;
+  padding-right: 30px;
+}

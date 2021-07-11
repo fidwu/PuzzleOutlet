@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import { useParams, withRouter } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../redux/ActionCreators";
 import Button from "react-bootstrap/Button";
 import ReactStars from "react-rating-stars-component";
 import Image from "react-bootstrap/Image";
 import Quantity from "../components/Quantity";
-import { useSelector } from "react-redux";
 
 const Product = () => {
   const { id } = useParams();
 
   const [productData, setProductData] = useState([]);
-  const [quantity, setQuantity] = useState(0);
 
   const itemsLoading = useSelector((state) => state.items.loading);
+  const getItemQuantity = useSelector(state => state.cart.data.find(item => item.itemId === id));
 
   const dispatch = useDispatch();
 
@@ -26,19 +25,11 @@ const Product = () => {
       const response = await fetch(`/items/${id}`);
       const result = await response.json();
       setProductData(result);
-
-      // get quantity if the item is in the cart already
-      let cartQuantity = await fetch(`/cart/tempUser/${id}`);
-      cartQuantity = await cartQuantity.json()
-      setQuantity(cartQuantity ? cartQuantity.quantity : 0);
-
     };
 
     fetchItemDetails();
 
   }, [id]);
-
-  // setQuantity(quantityRes ? quantityRes.quantity : 0);
 
   const addToCart = () => {
     const payload = {
@@ -50,7 +41,6 @@ const Product = () => {
       image: productData.image,
     };
     console.log(payload);
-    setQuantity(1);
     dispatch(addItem(payload));
   };
 
@@ -83,8 +73,9 @@ const Product = () => {
 
               <div className="buyProduct">
                 <div className="actionsDisplay">
-                  {quantity > 0 ? (
-                    <Quantity quantity={quantity} itemId={id} updateQuantity={setQuantity} />
+                  {getItemQuantity && getItemQuantity.quantity > 0 ? (
+                    <Quantity quantity={getItemQuantity.quantity} itemId={id} />
+
                   ) : (
                     <Button onClick={addToCart}>Add to Cart</Button>
                   )}
@@ -94,31 +85,7 @@ const Product = () => {
 
             <div className="aboutProduct">
               <h4>About this item</h4>
-              <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-                diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                aliquam erat volutpat Ut wisi enim ad minim veniam, quis nostrud
-                exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex
-                ea commodo consequat
-              </p>
-              <p>
-                Duis autem vel eum iriure dolor in hendrerit in vulputate velit
-                esse molestie consequat, vel illum dolore eu feugiat nulla
-                facilisis at vero eros et accumsan et iusto odio dignissim qui
-                blandit praesent luptatum zzril delenit augue duis dolore te
-                feugait nulla facilisiEpsum factorial non deposit quid pro quo
-                hic escorol
-              </p>
-              <p>
-                Defacto lingo est igpay atinlay Marquee selectus non provisio
-                incongruous feline nolo contendre
-              </p>
-              <p>Quote meon an estimate et non interruptus stadium</p>
-              <p>
-                Sic tempus fugit esperanto hiccup estrogen Glorious baklava ex
-                librus hup hey ad infinitum
-              </p>
-              <p>Epsum factorial non deposit quid pro quo hic escorol</p>
+              <p>{productData.description}</p>
             </div>
           </div>
 

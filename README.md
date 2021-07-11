@@ -1,3 +1,3 @@
-## ShopTech
+## PuzzleOutlet
 
 E-commerce Web Application
