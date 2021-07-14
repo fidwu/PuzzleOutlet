@@ -1,0 +1,27 @@
+.account {
+    width: 450px;
+    margin: 0 auto;
+    margin-top: 3vh;
+    box-shadow: 0px 10px 80px #808080;
+    border-radius: 10px;
+    padding: 18px 28px;
+}
+
+.account h2 {
+    text-align: center;
+}
+
+.form-group, .form-group .form-label {
+    margin-bottom: 0.2em;
+}
+
+.account button.btn {
+    display: flex;
+    margin: auto;
+    margin-top: 0.8em;
+    margin-bottom: 0.5em;
+}
+
+.alert {
+    margin-bottom: 0.2em;
+}

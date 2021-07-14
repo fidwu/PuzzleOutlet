@@ -2,6 +2,8 @@ import ProductCard from '../components/ProductCard';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 import { withRouter } from 'react-router-dom';
 
 function Home(props) {
@@ -11,7 +13,19 @@ function Home(props) {
   return (
     <>
         <Container fluid>
-        <h2 className="mb-3">Shop Products</h2>
+          <div className="d-flex mb-3">
+            <h2>Shop Products</h2>
+            <Form inline className="ml-3">
+              <Form.Control
+                placeholder="Search ShopTech"
+                type="search"
+                aria-label="Search"
+              />
+              <Button variant="primary" type="submit" className="ml-2">
+                Submit
+              </Button>
+            </Form>
+          </div>
           <Row>
             {props.inventory.map((item, id) => (
               <Col md={4} sm={6} key={id} >

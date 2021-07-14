@@ -20,7 +20,7 @@ const Cart = (props) => {
         <div className="cartItems">
           {cart.map((cartItems) => 
             <CartProduct
-              key={cartItems._id}
+              key={cartItems.itemId}
               itemId={cartItems.itemId}
               item={cartItems.product}
               price={cartItems.price + ' ea.'}

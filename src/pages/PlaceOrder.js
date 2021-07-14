@@ -76,7 +76,7 @@ const PlaceOrder = (props) => {
     console.log(props.totalPrice);
 
     const payload = {
-      user: "tempUser",
+      user: localStorage.getItem('user'),
       orderTotal: props.totalPrice,
       order: props.cartItems,
       shipping: shippingVal,

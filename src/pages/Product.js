@@ -33,7 +33,6 @@ const Product = () => {
 
   const addToCart = () => {
     const payload = {
-      username: "tempUser",
       quantity: 1,
       itemId: id,
       product: productData.product,

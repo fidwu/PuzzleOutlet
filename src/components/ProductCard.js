@@ -11,6 +11,7 @@ const ProductCard = (props) => {
     <Card
       onClick={() => handleCardClick(props.id)}
       style={{ cursor: "pointer" }}
+      className="item"
     >
       <Card.Img variant="top" src={props.image} />
       <Card.Body>

@@ -1,11 +1,15 @@
 .card {
   margin: 0 auto;
   margin-bottom: 20px;
+}
+
+.card.item {
   max-width: 70%;
+  margin-bottom: 40px;
 }
 
 @media only screen and (max-width: 1050px) {
-  .card {
+  .card.item {
     max-width: 85%;
   }
 }
