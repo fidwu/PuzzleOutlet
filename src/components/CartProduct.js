@@ -2,7 +2,7 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Quantity from './Quantity';
 import { deleteItem } from "../redux/ActionCreators";
 
@@ -11,9 +11,15 @@ const CartProduct = (props) => {
 
   const dispatch = useDispatch();
 
+  const userAuth = useSelector((state) => state.user);
+
   const deleteFromCart = (e) => {
     e.preventDefault();
-    dispatch(deleteItem(props.itemId));
+    dispatch(deleteItem(props.itemId, userAuth.user));
+  }
+
+  const calculateTotal = (price, quantity) => {
+    return (parseFloat(price) * quantity).toFixed(2);
   }
 
   return (
@@ -21,7 +27,7 @@ const CartProduct = (props) => {
       <Card.Img variant="top" src={props.image} />
       <Card.Body className="itemDetails">
         <Card.Title>{props.item}</Card.Title>
-        <Card.Text>{props.price}</Card.Text>
+        <Card.Text>${props.price}</Card.Text>
         {location.pathname === "/order" || location.pathname === "/pastorders" ?
           <Card.Text>Quantity: {props.quantity}</Card.Text>
           : 
@@ -34,7 +40,7 @@ const CartProduct = (props) => {
       {location.pathname !== "/order" && (
         <Card.Body className="totalPrice">
           <Card.Subtitle>
-            ${parseInt(props.price.substring(1)) * props.quantity}
+            ${calculateTotal(props.price, props.quantity)}
           </Card.Subtitle>
         </Card.Body>
       )}

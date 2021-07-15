@@ -15,6 +15,7 @@ const Product = () => {
 
   const itemsLoading = useSelector((state) => state.items.loading);
   const getItemQuantity = useSelector(state => state.cart.data.find(item => item.itemId === id));
+  const userAuth = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -37,10 +38,10 @@ const Product = () => {
       itemId: id,
       product: productData.product,
       price: productData.price,
-      image: productData.image,
+      image: productData.image
     };
     console.log(payload);
-    dispatch(addItem(payload));
+    dispatch(addItem(payload, userAuth.user));
   };
 
   if (itemsLoading) {
@@ -57,7 +58,7 @@ const Product = () => {
             <div className="productInfo">
               <div className="product">
                 <h2 className="">{productData.product}</h2>
-                <h4 className="">{productData.price}</h4>
+                <h4 className="">${productData.price}</h4>
                 <div className="star-rating">
                   <ReactStars
                     count={5}

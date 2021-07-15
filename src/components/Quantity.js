@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateItem, deleteItem } from "../redux/ActionCreators";
 import { MdAdd } from "react-icons/md";
 import { MdRemove } from "react-icons/md";
@@ -12,6 +12,8 @@ const Quantity = (props) => {
   const [quantity, setQuantity] = useState(props.quantity);
 
   const dispatch = useDispatch();
+
+  const userAuth = useSelector((state) => state.user);
 
   const quantityChanged = (e, type) => {
     e.preventDefault();
@@ -36,7 +38,7 @@ const Quantity = (props) => {
     }
     else {
       console.log("UPDATING...");
-      dispatch(updateItem(payload));
+      dispatch(updateItem(payload, userAuth.user));
     }
   };
 

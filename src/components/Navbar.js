@@ -4,8 +4,7 @@ import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
 import { NavLink, useLocation } from "react-router-dom";
 import { matchPath } from "react-router";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/ActionCreators";
 
 const Header = (props) => {

@@ -41,7 +41,8 @@ export const Auth = (state = initialState, action) => {
                 loading: false,
                 authenticated: false,
                 token: '',
-                user: null
+                user: null,
+                name: null
             };
         default:
             return state;

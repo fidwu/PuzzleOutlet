@@ -1,6 +1,6 @@
 import "./App.css";
 import "./App.scss";
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
@@ -8,11 +8,14 @@ import Cart from "./pages/Cart";
 import PastOrders from "./pages/PastOrders";
 import Header from "./components/Navbar";
 import PlaceOrder from "./pages/PlaceOrder";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import { fetchCartItems, fetchOrders } from "./redux/ActionCreators";
 
 function App() {
+
+  const dispatch = useDispatch();
 
   // items - list of products being sold
   const items = useSelector((state) => state.items.data);
@@ -20,16 +23,25 @@ function App() {
 
   const cart = useSelector((state) => state.cart.data);
   console.log("cart:", cart);
+  console.log(cart.length);
 
   const orders = useSelector((state) => state.orders.data);
   console.log(orders);
 
   const totalPrice = cart.reduce(
-    (total, current) => total + current.price.substring(1) * current.quantity,
+    (total, current) => total + current.price * current.quantity,
     0
   );
 
   const userAuth = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (userAuth.authenticated) {
+      dispatch(fetchCartItems(userAuth.user));
+      dispatch(fetchOrders(userAuth.user));
+    }
+  }, [dispatch, userAuth.authenticated, userAuth.user])
+
 
 
   return (

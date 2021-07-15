@@ -25,7 +25,7 @@ const ProductCard = (props) => {
             value={props.rating}
           />
         </div>
-        <Card.Text>{props.price}</Card.Text>
+        <Card.Text>${props.price}</Card.Text>
       </Card.Body>
     </Card>
   );

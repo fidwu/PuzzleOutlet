@@ -38,7 +38,7 @@ const Cart = (props) => {
         <div className="placeOrder">
           <h3 className="mb-4">
             Subtotal ({cart.length}{" "}
-            {cart.length === 1 ? "item" : "items"}): ${props.totalPrice}
+            {cart.length === 1 ? "item" : "items"}): ${props.totalPrice.toFixed(2)}
           </h3>
           <Link to="/order">
             <Button disabled={cart.length === 0}>Place Order</Button>

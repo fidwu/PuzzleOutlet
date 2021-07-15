@@ -1,15 +1,16 @@
 import * as ActionTypes from "./ActionTypes";
 
-const user = localStorage.getItem('user') ? localStorage.getItem('user') : null;
-console.log(user);
-
-export const addItem = (item) => (dispatch) => {
+export const addItem = (item, user) => (dispatch) => {
   console.log(item);
+  console.log(user);
   dispatch({
     type: ActionTypes.ADD_ITEM,
     payload: item,
   });
+
   if (user) {
+    item = {...item, user: user};
+    console.log(item);
     return fetch(`/cart`, {
       method: "post",
       headers: {
@@ -28,12 +29,13 @@ export const addItem = (item) => (dispatch) => {
   }
 };
 
-export const updateItem = (item) => (dispatch) => {
+export const updateItem = (item, user) => (dispatch) => {
   dispatch({
     type: ActionTypes.UPDATE_ITEM,
     payload: item,
   });
   if (user) {
+    item = {...item, user: user};
     return fetch(`/cart/${user}/${item.itemId}`, {
       method: "put",
       headers: {
@@ -51,7 +53,7 @@ export const updateItem = (item) => (dispatch) => {
   }
 };
 
-export const deleteItem = (itemId) => (dispatch) => {
+export const deleteItem = (itemId, user) => (dispatch) => {
   dispatch({
     type: ActionTypes.DELETE_ITEM,
     payload: itemId,
@@ -73,7 +75,7 @@ export const deleteItem = (itemId) => (dispatch) => {
   }
 };
 
-export const fetchOrders = () => (dispatch) => {
+export const fetchOrders = (user) => (dispatch) => {
   dispatch(fetchOrdersBegin());
   return fetch(`/orders/${user}`)
     .then((response) => {
@@ -103,10 +105,11 @@ export const fetchCartError = (errMsg) => ({
   payload: errMsg,
 });
 
-export const fetchCartItems = () => (dispatch) => {
-  dispatch(fetchCartBegin());
-  console.log("fetching cart items here");
-  return fetch(`/cart/${user}`)
+export const fetchCartItems = (user) => (dispatch) => {
+  if (user) {
+    dispatch(fetchCartBegin());
+    console.log("fetching cart items here");
+    return fetch(`/cart/${user}`)
     .then((response) => {
       return response.json();
     })
@@ -119,6 +122,7 @@ export const fetchCartItems = () => (dispatch) => {
       dispatch(fetchCartError(error.message));
       console.error("Error:", error);
     });
+  }
 };
 
 export const fetchOrdersBegin = () => ({

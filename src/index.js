@@ -4,24 +4,23 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import { ConfigureStore } from './redux/configureStore';
-import { fetchOrders, fetchItems, fetchCartItems } from './redux/ActionCreators';
+import { store, persistor } from './redux/configureStore';
+import { fetchItems } from './redux/ActionCreators';
+import { PersistGate } from 'redux-persist/integration/react';
 
-const store = ConfigureStore();
 store.dispatch(fetchItems());
-store.dispatch(fetchCartItems());
-store.dispatch(fetchOrders());
+// store.dispatch(fetchCartItems());
+// store.dispatch(fetchOrders());
 
 ReactDOM.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <PersistGate loading={null} persistor={persistor}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
