@@ -1,7 +1,7 @@
 import "./App.css";
 import "./App.scss";
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { fetchCartItems, fetchOrders } from "./redux/ActionCreators";
+import PrivateRoute from "./pages/PrivateRoute";
 
 function App() {
 
@@ -19,16 +20,10 @@ function App() {
 
   // items - list of products being sold
   const items = useSelector((state) => state.items.data);
-  console.log(items);
 
   const cart = useSelector((state) => state.cart.data);
-  console.log("cart:", cart);
-  console.log(cart.length);
 
-  const orders = useSelector((state) => state.orders.data);
-  console.log(orders);
-
-  const totalPrice = cart.reduce(
+  const totalPrice = cart?.reduce(
     (total, current) => total + current.price * current.quantity,
     0
   );
@@ -36,34 +31,26 @@ function App() {
   const userAuth = useSelector((state) => state.user);
 
   useEffect(() => {
+
     if (userAuth.authenticated) {
-      dispatch(fetchCartItems(userAuth.user));
-      dispatch(fetchOrders(userAuth.user));
+      dispatch(fetchCartItems(userAuth.user.email, cart));
+      dispatch(fetchOrders(userAuth.user.email));
     }
-  }, [dispatch, userAuth.authenticated, userAuth.user])
 
-
+  }, [dispatch, userAuth])
 
   return (
     <div className="App">
       <Router>
-        <Header numCartItems={cart.length} />
+        <Header numCartItems={cart ? cart.length : 0} />
         <Switch>
-          <Route exact path="/" render={() => <Home inventory={items} />} />
-          <Route exact path="/pastorders">
-            {userAuth.authenticated ? <PastOrders pastOrders={orders} /> : <Redirect to="/login" />}
-          </Route>
-          <Route exact path="/cart" render={() => <Cart cart={cart} totalPrice={totalPrice} />} />
-          <Route exact path="/order">
-            {userAuth.authenticated ? <PlaceOrder cartItems={cart} totalPrice={totalPrice} /> : <Redirect to="/login" />}
-          </Route>
+          <PrivateRoute path="/pastorders" component={PastOrders} />
+          <Route path="/cart" render={() => <Cart cart={cart} totalPrice={totalPrice} />} />
+          <PrivateRoute path="/order" component={PlaceOrder} />
           <Route path="/item/:id" component={Product} />
-          <Route path="/login">
-            {userAuth.authenticated ? <Redirect to="/" /> : <Login />}
-          </Route>
-          <Route path="/signup">
-            {userAuth.authenticated ? <Redirect to="/" /> : <Signup />}
-          </Route>
+          <Route path="/login" component={Login} />
+          <Route path="/signup" to={Signup} />
+          <Route path="/" render={() => <Home inventory={items} />} />
         </Switch>
       </Router>
     </div>

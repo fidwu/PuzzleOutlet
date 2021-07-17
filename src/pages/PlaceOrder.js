@@ -3,6 +3,7 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import Alert from "react-bootstrap/Alert";
 import { useHistory } from "react-router-dom";
 import PaymentForm from "../components/PaymentForm";
 import Shipping from "../components/Shipping";
@@ -10,11 +11,23 @@ import Confirm from "../components/Confirm";
 import OrderSummary from "../components/OrderSummary";
 import "react-datepicker/dist/react-datepicker.css";
 import "../css/datepicker.css";
+import { useSelector, useDispatch } from "react-redux";
+import { postOrders, emptyCart } from "../redux/ActionCreators";
 
-const PlaceOrder = (props) => {
+const PlaceOrder = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const cart = useSelector((state) => state.cart.data);
+  const userAuth = useSelector((state) => state.user);
+
+  const totalPrice = cart.reduce(
+    (total, current) => total + current.price * current.quantity,
+    0
+  );
 
   const [activeTab, setActiveTab] = useState(0);
+  const [errorMsg, setErrorMsg] = useState(null);
   const [expDate, setExpDate] = useState(false);
   const shippingFormValues = {
     fname: "",
@@ -49,9 +62,7 @@ const PlaceOrder = (props) => {
 
   const handleDateChange = (date) => {
     setExpDate(date);
-    console.log(date);
-
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,110 +82,76 @@ const PlaceOrder = (props) => {
       cvc: paymentValues.cvc,
     };
 
-    console.log(shippingVal, paymentVal);
-    console.log(props.cartItems);
-    console.log(props.totalPrice);
-
     const payload = {
-      user: localStorage.getItem('user'),
-      orderTotal: props.totalPrice,
-      order: props.cartItems,
+      user: JSON.parse(localStorage.getItem("user")).email,
+      orderTotal: totalPrice.toFixed(2),
+      order: cart,
       shipping: shippingVal,
       payment: {
         ...paymentVal,
-        expDate: expDate
-      }
+        expDate: expDate,
+      },
     };
     console.log(payload);
 
     if (paymentVal && shippingVal) {
-      fetch("/orders", {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
-        .then((response) => {
-          console.log(response);
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-          console.log("Success:", JSON.stringify(data));
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      dispatch(postOrders(userAuth.user.email, payload));
+      dispatch(emptyCart(userAuth.user.email));
     }
-    history.push('/');
+    history.push("/");
   };
 
   const handleTabChange = (e, change) => {
-    setActiveTab(activeTab + change);
-    if (activeTab === 0) {
+    console.log(change);
+    setErrorMsg(null);
+    if ((change === 1)) {
+      if (activeTab === 0) {
         for (var key in shippingValues) {
-            console.log(key);
-            if (shippingValues[key] === "") {
-                console.log(`${key} is blank -- not allowed`);
-                setActiveTab(activeTab);
-            }
+          if (shippingValues[key] === "") {
+            setErrorMsg("Please fill in all fields.");
+            setActiveTab(activeTab);
+          } else {
+            setActiveTab(activeTab + change);
+          }
         }
+      } else {
+        for (key in paymentValues) {
+          if (paymentValues[key] === "") {
+            setErrorMsg("Please fill in all fields.");
+            setActiveTab(activeTab);
+          } else {
+            setActiveTab(activeTab + change);
+          }
+        }
+      }
     }
     else {
-        for (key in paymentValues) {
-            if (paymentValues[key] === "") {
-                console.log(`${key} is blank -- not allowed`);
-                setActiveTab(activeTab);
-            }
-        }
+      console.log("in here to go back");
+      setActiveTab(activeTab + change);
     }
-    e.preventDefault();
+    return ;
   };
 
-  const selectTab = (pageId) => {
-    if (activeTab === 0) {
-        for (var key in shippingValues) {
-            if (shippingValues[key] === "") {
-                console.log(`${key} is blank -- not allowed`);
-                setActiveTab(activeTab);
-            }
-            else {
-                setActiveTab(pageId);
-            }
-        }
-    }
-    else {
-        for (key in paymentValues) {
-            console.log(key);
-            if (paymentValues[key] === "") {
-                console.log(`${key} is blank -- not allowed`);
-                setActiveTab(pageId);
-            }
-            else {
-                setActiveTab(pageId);
-            }
-        }
-    }
-  }
+  const alertMsg = () => {
+    return <Alert variant={"danger"}>{errorMsg}</Alert>;
+  };
 
   return (
     <Container fluid className="d-flex justify-content-between">
       <div className="placeorder">
         <h4>Checkout</h4>
-        <Tabs activeKey={activeTab} onSelect={(k) => selectTab(k)}>
+        <Tabs activeKey={activeTab}>
           <Tab eventKey={0} title="Shipping">
+            {errorMsg && alertMsg()}
             <Shipping
-              toNextTab={(e) => handleTabChange(e)}
               values={shippingValues}
               handleInputChange={(e) => handleInputChange(e)}
               handleSubmit={(e) => handleSubmit(e)}
             />
           </Tab>
           <Tab eventKey={1} title="Payment">
+            {errorMsg && alertMsg()}
             <PaymentForm
-              toNextTab={(e) => handleTabChange(e)}
               values={paymentValues}
               expDate={expDate}
               handleDate={handleDateChange}
@@ -202,38 +179,34 @@ const PlaceOrder = (props) => {
           >
             &#8249; Back
           </Button>
-          {activeTab !== 2 ? 
-        <Button
-            variant="primary"
-            type="submit"
-            onClick={(e) => {
-              handleTabChange(e, 1);
-            }}
-            className="d-flex ml-auto"
-          >
-            Next &#8250;
-          </Button>
-          :
-          <Button
-          variant="primary"
-          type="submit"
-          onClick={(e) => {
-            handleSubmit(e, true);
-            handleTabChange(e, 0);
-          }}
-          className="d-flex ml-auto"
-        >
-          Place Order
-        </Button>
-        }
-
+          {activeTab !== 2 ? (
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={(e) => {
+                handleTabChange(e, 1);
+              }}
+              className="d-flex ml-auto"
+            >
+              Next &#8250;
+            </Button>
+          ) : (
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={(e) => {
+                handleSubmit(e, true);
+                handleTabChange(e, 0);
+              }}
+              className="d-flex ml-auto"
+            >
+              Place Order
+            </Button>
+          )}
         </div>
       </div>
       <div className="order-summary">
-        <OrderSummary 
-          items={props.cartItems} 
-          totalPrice={props.totalPrice}
-        />
+        <OrderSummary items={cart} totalPrice={totalPrice} />
       </div>
     </Container>
   );

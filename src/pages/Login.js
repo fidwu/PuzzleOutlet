@@ -1,10 +1,10 @@
 import Form from "react-bootstrap/Form" ;
 import Button from "react-bootstrap/Button";
-import Alert from 'react-bootstrap/Alert'
+import Alert from 'react-bootstrap/Alert';
 import "../css/account.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useLocation } from "react-router-dom";
 import { loginError, loginUser } from "../redux/ActionCreators";
 
 const Login = () => {
@@ -17,6 +17,12 @@ const Login = () => {
     email: "",
     password: ""
   })
+
+  const { state } = useLocation();
+
+  if (userAuth.authenticated) {
+    return <Redirect to={state?.from || '/'} />
+  }
 
   const handleLogin = (event) => {
     event.preventDefault();

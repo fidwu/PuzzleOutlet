@@ -15,7 +15,7 @@ const CartProduct = (props) => {
 
   const deleteFromCart = (e) => {
     e.preventDefault();
-    dispatch(deleteItem(props.itemId, userAuth.user));
+    dispatch(deleteItem(props.itemId, userAuth.user.email));
   }
 
   const calculateTotal = (price, quantity) => {

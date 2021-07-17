@@ -34,11 +34,11 @@ const Quantity = (props) => {
 
     if (updatedQuantity <= 0) {
       console.log("DELETING.....");
-      dispatch(deleteItem(props.itemId));
+      dispatch(deleteItem(props.itemId, userAuth.user.email));
     }
     else {
       console.log("UPDATING...");
-      dispatch(updateItem(payload, userAuth.user));
+      dispatch(updateItem(payload, userAuth.user.email));
     }
   };
 

@@ -8,8 +8,16 @@ const initialState = {
 
 export const Orders = (state = initialState, action) => {
   switch (action.type) {
+    
+    case ActionTypes.POST_ORDERS_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        data: [...state.data],
+      };
+
     case ActionTypes.FETCH_ORDERS_BEGIN:
-      console.log("fetch begin");
       return {
         ...state,
         loading: true,
@@ -17,7 +25,6 @@ export const Orders = (state = initialState, action) => {
       };
 
     case ActionTypes.FETCH_ORDERS_SUCCESS:
-      console.log("fetching result : ", action.payload);
       return {
         ...state,
         loading: false,
@@ -25,7 +32,6 @@ export const Orders = (state = initialState, action) => {
       };
 
     case ActionTypes.FETCH_ORDERS_ERROR:
-      console.log("fetch error");
       return {
         ...state,
         loading: false,

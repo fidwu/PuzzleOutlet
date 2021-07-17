@@ -2,7 +2,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, Redirect } from "react-router-dom";
 import { matchPath } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/ActionCreators";
@@ -15,7 +15,6 @@ const Header = (props) => {
 
   const cartLoading = useSelector((state) => state.cart.loading);
   const userAuth = useSelector((state) => state.user);
-  console.log(userAuth);
 
   const checkPathId = () => {
     const match = matchPath(pathname, {
@@ -27,6 +26,7 @@ const Header = (props) => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
+    return <Redirect to="/" />
   }
 
   return (
@@ -60,7 +60,7 @@ const Header = (props) => {
               <Button variant="outline-light" onClick={handleLogout}>
                 Logout
               </Button>
-              <Navbar.Text className="ml-3">{userAuth.name}</Navbar.Text>
+              <Navbar.Text className="ml-3">{userAuth.user.name}</Navbar.Text>
             </>
           }
         </Nav>

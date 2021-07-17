@@ -17,8 +17,8 @@ const OrderSummary = (props) => {
             <CartProduct
               key={id}
               item={cartItems.product}
-              price={`$${
-                parseInt(cartItems.price.substring(1)) * cartItems.quantity
+              price={`${
+                (parseFloat(cartItems.price) * cartItems.quantity).toFixed(2)
               }`}
               image={cartItems.image}
               quantity={cartItems.quantity}
@@ -29,7 +29,7 @@ const OrderSummary = (props) => {
       <div className="total">
         <Row>
           <Col>Subtotal:</Col>
-          <Col className="d-flex justify-content-end">${props.totalPrice}</Col>
+          <Col className="d-flex justify-content-end">${props.totalPrice.toFixed(2)}</Col>
         </Row>
         <Row>
           <Col>Shipping:</Col>
@@ -41,7 +41,7 @@ const OrderSummary = (props) => {
             <b>Total:</b>
           </Col>
           <Col className="d-flex justify-content-end">
-            <b>${props.totalPrice}</b>
+            <b>${props.totalPrice.toFixed(2)}</b>
           </Col>
         </Row>
       </div>

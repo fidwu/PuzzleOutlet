@@ -1,5 +1,4 @@
 import * as ActionTypes from "./ActionTypes";
-import { REHYDRATE } from 'redux-persist'
 
 const initialState = {
   data: [],
@@ -10,16 +9,6 @@ const initialState = {
 export const Cart = (state = initialState, action) => {
 
   switch (action.type) {
-
-    case REHYDRATE:
-      console.log(action.payload);
-      if (action.payload && action.payload.cart) {
-        return { 
-          ...state, 
-          data: [...action.payload.cart.data]
-        };
-      }
-      return state;
 
     case ActionTypes.ADD_ITEM:
       const item = action.payload;
@@ -50,6 +39,12 @@ export const Cart = (state = initialState, action) => {
         ...state,
         data: filteredArray
       };
+
+    case ActionTypes.DELETE_ALL:
+      return {
+        ...state,
+        data: []
+      }
 
     case ActionTypes.FETCH_CART_BEGIN:
       return {

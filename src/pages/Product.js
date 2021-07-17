@@ -41,7 +41,7 @@ const Product = () => {
       image: productData.image
     };
     console.log(payload);
-    dispatch(addItem(payload, userAuth.user));
+    dispatch(addItem(payload, userAuth.user.email));
   };
 
   if (itemsLoading) {

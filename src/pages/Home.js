@@ -17,7 +17,7 @@ function Home(props) {
             <h2>Shop Products</h2>
             <Form inline className="ml-3">
               <Form.Control
-                placeholder="Search ShopTech"
+                placeholder="Search PuzzleOutlet"
                 type="search"
                 aria-label="Search"
               />
