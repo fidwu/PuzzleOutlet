@@ -100,27 +100,14 @@ export const fetchCartError = (errMsg) => ({
   payload: errMsg,
 });
 
-export const fetchCartItems = (user, existingCart) => (dispatch) => {
+export const fetchCartItems = (user) => (dispatch) => {
   dispatch(fetchCartBegin());
   return fetch(`/cart/${user}`)
     .then((response) => {
       return response.json();
     })
     .then((data) => {
-      if (!existingCart.length) {
-        dispatch(fetchCartSuccess(data));
-      }
-      // merge with existing cart
-      else {
-        const combinedCart = [...existingCart, ...data];
-        const itemIdSet = new Set();
-        let result = combinedCart.filter((item) => {
-          const duplicate = itemIdSet.has(item.itemId);
-          itemIdSet.add(item.itemId);
-          return !duplicate;
-        })
-        dispatch(fetchCartSuccess(result));
-      }
+      dispatch(fetchCartSuccess(data));
       return data;
     })
     .catch((error) => {

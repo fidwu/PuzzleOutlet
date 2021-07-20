@@ -33,7 +33,7 @@ function App() {
   useEffect(() => {
 
     if (userAuth.authenticated) {
-      dispatch(fetchCartItems(userAuth.user.email, cart));
+      dispatch(fetchCartItems(userAuth.user.email));
       dispatch(fetchOrders(userAuth.user.email));
     }
 
@@ -49,7 +49,7 @@ function App() {
           <PrivateRoute path="/order" component={PlaceOrder} />
           <Route path="/item/:id" component={Product} />
           <Route path="/login" component={Login} />
-          <Route path="/signup" to={Signup} />
+          <Route path="/signup" component={Signup} />
           <Route path="/" render={() => <Home inventory={items} />} />
         </Switch>
       </Router>

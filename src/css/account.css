@@ -25,3 +25,17 @@
 .alert {
     margin-bottom: 0.2em;
 }
+
+@media only screen and (max-width: 500px) {
+    .account {
+        width: 80%;
+    }
+    .account .form-row {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-row .form-group {
+        padding: 0 !important;
+    }
+}

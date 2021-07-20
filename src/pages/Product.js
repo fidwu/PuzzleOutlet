@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Container from "react-bootstrap/Container";
 import { useParams, withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,26 +11,12 @@ import Quantity from "../components/Quantity";
 const Product = () => {
   const { id } = useParams();
 
-  const [productData, setProductData] = useState([]);
-
   const itemsLoading = useSelector((state) => state.items.loading);
+  const productData = useSelector((state) => state.items.data.find(item => item._id === id));
   const getItemQuantity = useSelector(state => state.cart.data.find(item => item.itemId === id));
   const userAuth = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-
-    const fetchItemDetails = async () => {
-      // fetch item details
-      const response = await fetch(`/items/${id}`);
-      const result = await response.json();
-      setProductData(result);
-    };
-
-    fetchItemDetails();
-
-  }, [id]);
 
   const addToCart = () => {
     const payload = {
@@ -40,7 +26,6 @@ const Product = () => {
       price: productData.price,
       image: productData.image
     };
-    console.log(payload);
     dispatch(addItem(payload, userAuth.user.email));
   };
 
@@ -67,8 +52,8 @@ const Product = () => {
                     edit={false}
                     value={productData.rating}
                   />
-                  <span>&nbsp; &nbsp; | &nbsp; &nbsp; 1 review</span>
                 </div>
+                <span>1 review</span>
               </div>
 
               <div className="buyProduct">
@@ -91,7 +76,7 @@ const Product = () => {
 
           <div className="reviews">
             <h4>Customer Reviews</h4>
-            <p className="mb-0">Username</p>
+            <p className="mb-0">Username <span>(Reviewed 1/1/21)</span></p>
             <div className="star-rating">
               <ReactStars
                 count={5}
@@ -100,7 +85,6 @@ const Product = () => {
                 edit={false}
                 value={productData.rating}
               />
-              <span>(Reviewed 1/1/21)</span>
             </div>
             <p>Good Product</p>
           </div>

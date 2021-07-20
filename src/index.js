@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -9,8 +10,6 @@ import { fetchItems } from './redux/ActionCreators';
 import { PersistGate } from 'redux-persist/integration/react';
 
 store.dispatch(fetchItems());
-// store.dispatch(fetchCartItems());
-// store.dispatch(fetchOrders());
 
 ReactDOM.render(
   <Provider store={store}>

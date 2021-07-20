@@ -51,14 +51,22 @@ export const Cart = (state = initialState, action) => {
         ...state,
         loading: true,
         error: null,
-        data: []
+        data: [...state.data]
       };
   
     case ActionTypes.FETCH_CART_SUCCESS:
+      // merge fetched cart data with existing cart
+      const combinedCart = [...state.data, ...action.payload];
+      const itemIdSet = new Set();
+      let result = combinedCart.filter((item) => {
+        const duplicate = itemIdSet.has(item.itemId);
+        itemIdSet.add(item.itemId);
+        return !duplicate;
+      })
       return {
         ...state,
         loading: false,
-        data: action.payload,
+        data: result,
       };
   
     case ActionTypes.FETCH_CART_ERROR:
@@ -66,7 +74,7 @@ export const Cart = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload,
-        data: [],
+        data: [...state.data],
       };
 
     default:

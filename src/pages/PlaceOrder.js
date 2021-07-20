@@ -133,11 +133,11 @@ const PlaceOrder = () => {
   };
 
   const alertMsg = () => {
-    return <Alert variant={"danger"}>{errorMsg}</Alert>;
+    return <Alert variant={"danger"} className="mb-2">{errorMsg}</Alert>;
   };
 
   return (
-    <Container fluid className="d-flex justify-content-between">
+    <Container fluid className="d-flex justify-content-between placeOrder-summary">
       <div className="placeorder">
         <h4>Checkout</h4>
         <Tabs activeKey={activeTab}>

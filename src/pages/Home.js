@@ -8,14 +8,12 @@ import { withRouter } from 'react-router-dom';
 
 function Home(props) {
 
-  console.log(props.inventory);
-
   return (
     <>
         <Container fluid>
-          <div className="d-flex mb-3">
+          <div className="d-flex mb-3 search">
             <h2>Shop Products</h2>
-            <Form inline className="ml-3">
+            <Form inline>
               <Form.Control
                 placeholder="Search PuzzleOutlet"
                 type="search"

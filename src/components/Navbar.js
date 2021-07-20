@@ -2,7 +2,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
-import { NavLink, useLocation, Redirect } from "react-router-dom";
+import { NavLink, useLocation, useHistory } from "react-router-dom";
 import { matchPath } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/ActionCreators";
@@ -10,6 +10,7 @@ import { logoutUser } from "../redux/ActionCreators";
 const Header = (props) => {
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const pathname = useLocation().pathname;
 
@@ -26,35 +27,37 @@ const Header = (props) => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    return <Redirect to="/" />
+    history.push("/");
   }
 
   return (
     <>
-      <Navbar bg="dark" variant="dark">
+      <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
         <Navbar.Brand href="/">PuzzleOutlet</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse>
         <Nav className="ml-auto">
-          <NavLink to="/" isActive={() => checkPathId()}>
+          <Nav.Link eventKey="1" as={NavLink} to="/" isActive={() => checkPathId()}>
             Home
-          </NavLink>
-          <NavLink exact to="/cart">
+          </Nav.Link>
+          <Nav.Link eventKey="2" as={NavLink} exact to="/cart">
             Cart{" "}
             <Badge pill variant="info" className="align-middle">
               {cartLoading ? ` ` : props.numCartItems}
             </Badge>
-          </NavLink>
+          </Nav.Link>
           { userAuth.authenticated ?
-            <NavLink exact to="/pastorders">
+            <Nav.Link eventKey="3" as={NavLink} exact to="/pastorders">
               Past Orders
-            </NavLink>
+            </Nav.Link>
             : null
           }
 
           {!userAuth.authenticated 
             ?
-            <NavLink exact to="/login">
+            <Nav.Link eventKey="4" as={NavLink} exact to="/login">
               Login
-            </NavLink>
+            </Nav.Link>
             :
             <>
               <Button variant="outline-light" onClick={handleLogout}>
@@ -64,6 +67,7 @@ const Header = (props) => {
             </>
           }
         </Nav>
+        </Navbar.Collapse>
       </Navbar>
     </>
   );

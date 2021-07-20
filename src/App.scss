@@ -1,3 +1,24 @@
+/* Home Page */
+.search .form-control {
+  max-width: 65%;
+}
+
+.search .form-inline {
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 550px) {
+  .search {
+    flex-direction: column;
+    margin-left: 0px;
+
+    .form-inline {
+      margin-left: 0px;
+    }
+
+  }
+}
+
 .card {
   margin: 0 auto;
   margin-bottom: 20px;
@@ -23,19 +44,22 @@
   display: flex;
   align-items: center;
 }
+
+/* Product page styling */
 .productDescription {
   margin-top: 1em;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .productDetails {
   margin-bottom: 1em;
   width: 100%;
 
   img {
     width: 35%;
-    margin-right: 40px;
+    margin-right: 20px;
     float: left;
   }
 
@@ -62,28 +86,68 @@
       height: 40px;
     }
   }
+
+  .aboutProduct p {
+    white-space: pre-wrap;
+  }
+
 }
 
-.aboutProduct p {
-  white-space: pre-wrap;
+@media only screen and (max-width: 590px) {
+  .productDetails, .productInfo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .productDetails img {
+    width: 80% !important;
+    margin: auto;
+  }
+
+  .productInfo, .aboutProduct, .reviews {
+    width: 85%;
+    margin: auto;
+    margin-top: 10px;
+  }
+
+  .productInfo .buyProduct {
+    margin-right: 0;
+    width: 100%;
+    margin-top: 10px;
+  }
+
 }
 
-.shoppingCart,
-.pastOrders {
+
+.input-group.form-inline {
+  width: fit-content;
+}
+
+/* Styling applying to both shopping cart and past orders */
+.shoppingCart, .pastOrders {
+
   .card {
     display: flex;
     flex-direction: row;
   }
-  .card-body {
+
+  .card-body-main-content {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
   }
+
+  .card-body {
+    padding: 8px;
+  }
+
   .itemDetails {
     flex-direction: column;
     align-items: flex-start;
   }
-  .totalPrice {
+
+  .totalPrice, .other {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,21 +155,25 @@
       font-size: 20px;
     }
   }
+
   img {
-    width: 15vw;
-    height: auto;
-    margin: 20px;
-    margin-right: 0px;
+    width: 14vw;
+    height: 100%;
+    margin: auto;
+    margin-left: 10px;
   }
 }
 
+/* Shopping cart styling */
 .shoppingCart {
   display: flex;
   justify-content: space-between;
+
   .cartItems {
     flex: 4;
     margin-right: 15px;
   }
+
   .placeOrder {
     display: flex;
     flex-direction: column;
@@ -115,10 +183,58 @@
     justify-content: center;
     height: fit-content;
   }
+
   .card-link:hover {
     cursor: pointer;
     color: blue;
   }
+}
+
+.itemDetails .card-title, .itemDetails .card-text {
+  margin-bottom: 8px;
+}
+
+/* Tablet size */
+@media only screen and (max-width: 700px) {
+  .shoppingCart, .pastOrders {
+    flex-direction: column;
+  }
+
+  .shoppingCart img, .pastOrders img {
+    width: 25%;
+    height: 100%;
+    margin: auto;
+    margin-left: 10px;
+  }
+
+  .shoppingCart .cartItems {
+    margin-right: 0;
+  }
+
+}
+
+/* Mobile styling for shopping cart and past orders */
+@media only screen and (max-width: 480px) {
+
+  .shoppingCart, .pastOrders {
+
+    .totalPrice, .other, .itemDetails {
+      display: block;
+    }
+
+    .card-body-main-content {
+      width: 100%;
+      display: block;
+    }
+
+    .card-body {
+      flex-direction: column;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+  }
+
 }
 
 .pastOrdersContainer {
@@ -134,11 +250,9 @@
     border: none;
     margin-bottom: 0;
   }
-  img {
-    margin: 0;
-  }
 }
 
+/* Place Order */
 .placeorder {
   flex: 1;
   margin-right: 40px;
@@ -151,37 +265,39 @@
   .nav-item {
     flex: 1;
     text-align: center;
+    color: black;
   }
 
   .tab-content {
     margin: 15px auto;
   }
 
-  .custom-control-label,
-  p,
-  div {
+  .custom-control-label, p, div {
     font-weight: normal;
   }
+
   .form-group {
     margin-bottom: 0;
   }
+
   .form-group > * {
     margin-bottom: 15px;
   }
+
   .confirm {
     display: flex;
     justify-content: center;
     margin-bottom: 10px;
   }
-  .shipping,
-  .billing {
+
+  .shipping, .billing {
     text-align: center;
     p {
       margin-bottom: 0;
     }
   }
-  .shipping *,
-  .billing * {
+
+  .shipping *, .billing * {
     display: inline-block;
     text-align: left;
   }
@@ -214,5 +330,34 @@
     > * {
       margin-bottom: 0.5em;
     }
+  }
+}
+
+/* Place Order and Summary styling - tablet and mobile */
+@media only screen and (max-width: 700px) {
+  .placeOrder-summary {
+    flex-direction: column-reverse;
+
+    .placeorder, .order-summary {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+}
+
+/* Mobile Place Order form styling */
+@media only screen and (max-width: 450px) {
+  .placeorder {
+
+    .form-group .col {
+      padding: 0 5px;
+    }
+
+    .form-group.row {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
   }
 }

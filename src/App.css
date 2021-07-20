@@ -1,7 +1,8 @@
 .App {
-  min-height: 100vh;
+  min-height: 98vh;
   display: flex;
   flex-direction: column;
+  margin-bottom: 2vh;
 }
 
 /* Navbar */
@@ -13,9 +14,12 @@
   margin-bottom: 1em;
 }
 
+.navbar-nav .nav-link {
+  color: white !important;
+}
+
 .navbar-nav a {
-  padding: 0 2vw;
-  color: white;
+  padding: 1vh 2vw !important;
   text-decoration: none;
   margin: auto;
 }
@@ -28,9 +32,18 @@ hr {
   min-width: 18px;
   min-height: 18px;
   height: 18px;
+  border-radius: 45%;
 }
 
 .container-fluid {
   padding-left: 30px;
   padding-right: 30px;
+}
+
+
+@media only screen and (max-width: 580px) {
+  .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }

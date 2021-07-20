@@ -25,34 +25,36 @@ const CartProduct = (props) => {
   return (
     <Card className="card">
       <Card.Img variant="top" src={props.image} />
-      <Card.Body className="itemDetails">
-        <Card.Title>{props.item}</Card.Title>
-        <Card.Text>${props.price}</Card.Text>
-        {location.pathname === "/order" || location.pathname === "/pastorders" ?
-          <Card.Text>Quantity: {props.quantity}</Card.Text>
-          : 
-          <Quantity 
-            quantity={props.quantity}
-            itemId={props.itemId}
-          />
-      }
-      </Card.Body>
-      {location.pathname !== "/order" && (
-        <Card.Body className="totalPrice">
-          <Card.Subtitle>
-            ${calculateTotal(props.price, props.quantity)}
-          </Card.Subtitle>
+      <div className="card-body-main-content">
+        <Card.Body className="itemDetails">
+          <Card.Title>{props.item}</Card.Title>
+          <Card.Text>${props.price}</Card.Text>
+          {location.pathname === "/order" || location.pathname === "/pastorders" ?
+            <Card.Text>Quantity: {props.quantity}</Card.Text>
+            : 
+            <Quantity 
+              quantity={props.quantity}
+              itemId={props.itemId}
+            />
+        }
         </Card.Body>
-      )}
-      {location.pathname !== "/order" && (
-        <Card.Body>
-          {location.pathname !== "/pastorders" ? (
-            <Card.Link onClick={(e) => deleteFromCart(e)}>Delete</Card.Link>
-          ) : (
-            <Button>Write a review</Button>
-          )}
-        </Card.Body>
-      )}
+        {location.pathname !== "/order" && (
+          <Card.Body className="totalPrice">
+            <Card.Subtitle>
+              ${calculateTotal(props.price, props.quantity)}
+            </Card.Subtitle>
+          </Card.Body>
+        )}
+        {location.pathname !== "/order" && (
+          <Card.Body className="other">
+            {location.pathname !== "/pastorders" ? (
+              <Card.Link onClick={(e) => deleteFromCart(e)}>Delete</Card.Link>
+            ) : (
+              <Button>Write a review</Button>
+            )}
+          </Card.Body>
+        )}
+      </div>
     </Card>
   );
 };
