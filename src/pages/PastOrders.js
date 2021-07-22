@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 const PastOrders = () => {
 
   const orders = useSelector((state) => state.orders.data);
-  console.log(orders);
 
   const formatDate = (inputDate) => {
     return new Date(inputDate).toLocaleDateString("en-US", {

@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 
 const Cart = (props) => {
 
-  console.log(props.cart);
-
   const cart = props.cart;
 
   return (

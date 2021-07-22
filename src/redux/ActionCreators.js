@@ -8,8 +8,7 @@ export const addItem = (item, user) => (dispatch) => {
 
   if (user) {
     item = {...item, user: user};
-    console.log(item); 
-    return fetch(`/cart`, {
+    return fetch("api/cart", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -18,7 +17,6 @@ export const addItem = (item, user) => (dispatch) => {
       body: JSON.stringify(item),
     })
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .catch((error) => {
@@ -28,9 +26,8 @@ export const addItem = (item, user) => (dispatch) => {
 };
 
 const getItemInfo = async (itemId) => {
-  let response = await fetch(`/items/${itemId}`);
+  let response = await fetch(`api/items/${itemId}`);
   let itemInfo = await response.json();
-  console.log(itemInfo);
   return itemInfo;
 }
 
@@ -43,8 +40,7 @@ export const updateItem = (item, user) => async (dispatch) => {
     let itemInfo = await getItemInfo(item.itemId);
     const { product, price, image } = itemInfo;
     item = {...item, user: user, product, price, image};
-    console.log(item);
-    return fetch(`/cart/${user}/${item.itemId}`, {
+    return fetch(`api/cart/${user}/${item.itemId}`, {
       method: "put",
       headers: {
         Accept: "application/json",
@@ -70,7 +66,7 @@ export const deleteItem = (itemId, user) => (dispatch) => {
     payload: itemId,
   });
   if (user) {
-    return fetch(`/cart/${user}/${itemId}`, {
+    return fetch(`api/cart/${user}/${itemId}`, {
       method: "delete",
       headers: {
         Accept: "application/json",
@@ -102,7 +98,7 @@ export const fetchCartError = (errMsg) => ({
 
 export const fetchCartItems = (user) => (dispatch) => {
   dispatch(fetchCartBegin());
-  return fetch(`/cart/${user}`)
+  return fetch(`api/cart/${user}`)
     .then((response) => {
       return response.json();
     })
@@ -120,7 +116,7 @@ export const emptyCart = (user) => (dispatch) => {
   dispatch({
     type: ActionTypes.DELETE_ALL
   });
-  return fetch(`/cart/${user}`, {
+  return fetch(`api/cart/${user}`, {
     method: "delete",
     headers: {
       Accept: "application/json",
@@ -128,14 +124,13 @@ export const emptyCart = (user) => (dispatch) => {
     }
   })
     .then((response) => {
-      console.log(response);
       if (!response.ok) {
         throw new Error(response.err);
       }
       return response.json();
     })
     .then((data) => {
-      console.log(data);
+      return data;
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -144,7 +139,7 @@ export const emptyCart = (user) => (dispatch) => {
 
 export const fetchOrders = (user) => (dispatch) => {
   dispatch(fetchOrdersBegin());
-  return fetch(`/orders/${user}`)
+  return fetch(`api/orders/${user}`)
     .then((response) => {
       return response.json();
     })
@@ -178,8 +173,7 @@ export const postOrdersError = (errMsg) => ({
 });
 
 export const postOrders = (user, payload) => (dispatch) => {
-  console.log(payload);
-  return fetch("/orders", {
+  return fetch("api/orders", {
     method: "post",
     headers: {
       Accept: "application/json",
@@ -188,14 +182,12 @@ export const postOrders = (user, payload) => (dispatch) => {
     body: JSON.stringify(payload),
   })
     .then((response) => {
-      console.log(response);
       if (!response.ok) {
         throw new Error(response.err);
       }
       return response.json();
     })
     .then((data) => {
-      console.log(data);
       dispatch(fetchOrders(user));
     })
     .catch((error) => {
@@ -220,7 +212,7 @@ export const fetchItemsError = (errMsg) => ({
 
 export const fetchItems = () => (dispatch) => {
   dispatch(fetchItemsBegin());
-  return fetch('/items')
+  return fetch('api/items')
     .then((response) => {
       return response.json();
     })
@@ -242,7 +234,6 @@ export const requestLogin = (creds) => {
 };
 
 export const loginSuccess = (response) => {
-  console.log("in login success:", response);
   return {
     type: ActionTypes.LOGIN_SUCCESS,
     token: response.token,
@@ -260,7 +251,7 @@ export const loginError = (message) => {
 export const loginUser = (creds) => (dispatch) => {
   dispatch(requestLogin(creds));
 
-  return fetch("/users/login", {
+  return fetch("api/users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -269,7 +260,6 @@ export const loginUser = (creds) => (dispatch) => {
   })
     .then(
       (response) => {
-        console.log(response);
         if (response.ok) {
           return response;
         } else {
@@ -279,7 +269,6 @@ export const loginUser = (creds) => (dispatch) => {
     )
     .then((response) => response.json())
     .then((response) => {
-      console.log(response);
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify({ "name": response.user, "email": response.email}));
       dispatch(loginSuccess(response));
@@ -295,7 +284,6 @@ export const requestSignup = (creds) => {
 };
 
 export const signupSuccess = (response) => {
-  console.log("in signup success:", response);
   return {
     type: ActionTypes.SIGNUP_SUCCESS,
     token: response.token,
@@ -304,7 +292,6 @@ export const signupSuccess = (response) => {
 };
 
 export const signupError = (message) => {
-  console.log("signup error message: ", message);
   return {
     type: ActionTypes.SIGNUP_FAILURE,
     message,
@@ -314,7 +301,7 @@ export const signupError = (message) => {
 export const signupUser = (creds) => (dispatch) => {
   dispatch(requestSignup(creds));
 
-  return fetch("/users/signup", {
+  return fetch("api/users/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -355,7 +342,6 @@ export const logoutUser = () => (dispatch) => {
 };
 
 export const getUser = (user) => {
-  console.log(user);
   return {
     type: ActionTypes.GET_USER,
     user

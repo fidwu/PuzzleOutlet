@@ -9,7 +9,6 @@ const initialState = {
 export const Items = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.FETCH_ITEMS_BEGIN:
-      console.log("fetch begin");
       return {
         ...state,
         loading: true,
@@ -17,7 +16,6 @@ export const Items = (state = initialState, action) => {
       };
 
     case ActionTypes.FETCH_ITEMS_SUCCESS:
-      console.log("fetching result : ", action.payload);
       return {
         ...state,
         loading: false,
@@ -25,7 +23,6 @@ export const Items = (state = initialState, action) => {
       };
 
     case ActionTypes.FETCH_ITEMS_ERROR:
-      console.log("fetch error");
       return {
         ...state,
         loading: false,

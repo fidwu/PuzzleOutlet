@@ -65,12 +65,6 @@ export const Auth = (state = initialState, action) => {
                 user: { "email": "", "name": "" },
             };
 
-        // case ActionTypes.GET_USER:
-        //     console.log(action.user);
-        //     return {...state,
-        //         user: action.user
-        //     }
-
         default:
             return state;
     }

@@ -29,8 +29,6 @@ const CustomerInfoForm = (props) => {
       email: values.email,
       phoneNum: values.phoneNum,
     };
-
-    console.log(customerInfoFormValues);
   };
 
   return (

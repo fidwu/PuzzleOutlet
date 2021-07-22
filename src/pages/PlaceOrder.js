@@ -92,7 +92,6 @@ const PlaceOrder = () => {
         expDate: expDate,
       },
     };
-    console.log(payload);
 
     if (paymentVal && shippingVal) {
       dispatch(postOrders(userAuth.user.email, payload));
@@ -102,9 +101,8 @@ const PlaceOrder = () => {
   };
 
   const handleTabChange = (e, change) => {
-    console.log(change);
     setErrorMsg(null);
-    if ((change === 1)) {
+    if (change === 1) {
       if (activeTab === 0) {
         for (var key in shippingValues) {
           if (shippingValues[key] === "") {
@@ -126,7 +124,6 @@ const PlaceOrder = () => {
       }
     }
     else {
-      console.log("in here to go back");
       setActiveTab(activeTab + change);
     }
     return ;
